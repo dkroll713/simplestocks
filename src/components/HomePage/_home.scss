@@ -1,0 +1,21 @@
+
+
+.cardContainer {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 3%;
+}
+
+.card {
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 7%;
+  margin: .5%;
+  transition: .5s;
+}
+
+.card:hover {
+  background-color: whitesmoke;
+  transition: .5s;
+}
