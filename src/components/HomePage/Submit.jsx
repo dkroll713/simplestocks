@@ -1,5 +1,7 @@
 import React from 'react';
 
+import currentStore from './submit.js'
+
 const axios = require('axios');
 
 class SubmitBar extends React.Component {
@@ -17,9 +19,15 @@ class SubmitBar extends React.Component {
   }
 
   handleClick = (e) => {
-    axios.post(`/tickers/${this.state.current}`)
+    axios.post(`/tickers/${this.state.current.toUpperCase()}`)
     .then((res) => {
-      console.log(res)
+      if (res.status === 500) {
+        console.log(res.data);
+      } else {
+        console.log(res)
+        let input = document.getElementById('input')
+        input.value = '';
+      }
     })
     .catch(err => {
       console.log(err);
@@ -27,13 +35,23 @@ class SubmitBar extends React.Component {
   }
 
   render() {
-    return (
-      <div className="stockBar">
+    if (this.state.current.length < 1 || this.state.current.length > 6) {
+      return (
+        <div className="stockBar">
         <h5>Enter a stock:</h5>
-        <input onChange={this.handleChange}></input>
-        <button onClick={this.handleClick}>Submit</button>
+        <input id="input" onChange={this.handleChange} value={this.state.current}></input>
+        <button onClick={this.handleClick} disabled="true">Submit</button>
       </div>
-    )
+      )
+    } else {
+      return (
+        <div className="stockBar">
+          <h5>Enter a stock:</h5>
+          <input id="input" onChange={this.handleChange} value={this.state.current}></input>
+          <button onClick={this.handleClick}>Submit</button>
+        </div>
+      )
+    }
   }
 }
 

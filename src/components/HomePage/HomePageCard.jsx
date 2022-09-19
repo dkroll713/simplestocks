@@ -5,7 +5,7 @@ const HomePageCard = (props) => {
   console.log(props);
   return (
     <div className="card">
-      {stock}
+      {stock.ticker}
     </div>
   )
 }

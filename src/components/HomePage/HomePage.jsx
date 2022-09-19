@@ -1,20 +1,44 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import store from '../../zs.js'
 
 import HomePageCard from './HomePageCard.jsx'
-import SubmitBar from './Submit.jsx'
+// import SubmitBar from './Submit.jsx'
+import Submit from './SubmitBar.jsx'
+
+const axios = require('axios');
 
 import './_home.scss'
 
 const HomePage = () => {
   const stocks = store((state => state.stocks))
+  const setStocks = store((state) => state.setStocks)
+  const update = store((state) => state.update);
+  const unsetUpdate = store((state) => state.unsetUpdate)
+
+  useEffect(() => {
+    axios.get('/tickers')
+    .then((res) => {
+      setStocks(res)
+    })
+  }, [update])
+
+  useEffect(() => {
+    if (update) {
+      axios.get('/tickers')
+      .then((res) => {
+        setStocks(res);
+        unsetUpdate();
+      })
+    }
+  }, [update])
 
   return (
     <div>
       <div>
         <h3 className="headerBar">Welcome to the money zone</h3>
       </div>
-      <SubmitBar />
+
+      <Submit />
 
       <div>
         <p>You've entered the following stocks:</p>

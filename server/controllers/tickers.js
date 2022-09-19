@@ -33,7 +33,7 @@ module.exports.addTicker = (req, res) => {
     let ticker = req.url.split('/')[2]
     console.log(ticker.toUpperCase());
     let query = `insert into "chosen"(date,ticker) values($1, $2)`
-    let values = ['current_timestamp', `'${ticker}'`]
+    let values = ['current_timestamp', `${ticker}`]
     pool.query(
       query, values
     ).then(() => {
@@ -41,7 +41,7 @@ module.exports.addTicker = (req, res) => {
     })
     .catch((err) => {
       console.log(`error adding ${ticker} to db; error: ${err}`)
-      res.send(`error adding ${ticker} to db; error: ${err}`)
+      res.status(400).send(`error adding ${ticker} to db; error: ${err}`)
     })
   }
 }
