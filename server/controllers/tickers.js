@@ -14,7 +14,7 @@ const pool = new Pool({
 module.exports.getTickers = (req, res) => {
   if (req.url.includes('tickers')) {
     pool.query(
-      `select * from chosen c`
+      `select * from chosen c order by c.ticker asc`
     )
     .then((result) => {
       console.log(result.rows);
