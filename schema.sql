@@ -121,4 +121,23 @@ CREATE TABLE `financials` (
   `taxliabilities` bigint(11) DEFAULT NULL,
   `tbvps` float DEFAULT NULL,
   `workingcapital` bigint(11) DEFAULT NULL
-)
+);
+
+-- Table: public.financials
+
+DROP TABLE IF EXISTS public.indicators;
+
+CREATE TABLE IF NOT EXISTS public.indicators
+(
+    index serial,
+	"table" varchar(255),
+	indicator varchar(255),
+	isfilter varchar(1),
+	isprimarykey varchar(1),
+	title varchar(255),
+	description varchar(255),
+	unittype varchar(255)
+);
+
+ALTER TABLE IF EXISTS public.indicators
+    OWNER to ubuntu;

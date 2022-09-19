@@ -19,7 +19,13 @@ app.use(express.static(path.join(__dirname,"../public",)));
 
 app.get('/tickers', controllers.getTickers)
 
-app.post('/tickers*', controllers.addTicker);
+app.post('/tickers/*', controllers.addTicker);
+
+app.get('/ticker/*', controllers.getBasicInfo);
+
+app.get('/chart/*', controllers.chart);
+
+app.get('/finstats/*', controllers.finstats)
 
 app.listen(port, () => {
   console.log(`saved choice server listening on port ${port}`)
