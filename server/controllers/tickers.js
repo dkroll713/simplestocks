@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const {createSharadarObject} = require('./sharadar.js')
+const {createSharadarObject, createInfoObject} = require('./sharadar.js')
 
 const cf = require('../../config.js');
 
@@ -50,19 +50,21 @@ module.exports.getBasicInfo = (req, res) => {
   })
 }
 
-// submit ticker to db
+// submit ticker to db - multi step process
 module.exports.addTicker = (req, res) => {
   if (req.url.includes('tickers')) {
     console.log(req.url);
     let ticker = req.url.split('/')[2]
     console.log(ticker.toUpperCase());
+    let timestamp = Date.now()
+    console.log(timestamp)
     let query = `insert into "chosen"(date,ticker) values($1, $2)`
-    let values = ['current_timestamp', `${ticker}`]
+    let values = [timestamp, `${ticker}`]
+    // submit ticker to db
     pool.query(
       query, values
     ).then(() => {
       let url = `https://data.nasdaq.com/api/v3/datatables/SHARADAR/SF1?calendardate=2021-12-31&dimension=MRY&ticker=${ticker}&api_key=${cf.sharadar}`
-      axios.get(url)
       axios.get(url)
       .then(result => {
         let data = createSharadarObject(result.data.datatable);
@@ -91,20 +93,19 @@ module.exports.addTicker = (req, res) => {
         for (let key in data) {
           values.push(data[key]);
         }
+        // then submit financials to db
         pool.query(query, values)
         .then(() => {
           res.send(data)
         })
         .catch(err => {
           console.log(err);
-          res.status(500).send(data);
+          res.status(400).send(data);
         })
       })
       .catch(err => {
-        res.status(500).send(err);
+        res.status(400).send(err);
       })
-
-        // res.send(`adding ${ticker} to db and populating data`)
     })
     .catch((err) => {
       console.log(`error adding ${ticker} to db; error: ${err}`)
@@ -121,6 +122,19 @@ module.exports.chart = (req, res) => {
     client.chart({symbol: ticker, range: "1y"}).then((response) => {
         res.send(response);
 });
+}
+
+module.exports.tickerInfo = (req, res) => {
+  let ticker = req.url.split('/')[2].toUpperCase();
+  url = `https://data.nasdaq.com/api/v3/datatables/SHARADAR/TICKERS.json?ticker=${ticker}&api_key=${cf.sharadar}`
+  axios.get(url)
+  .then((result) => {
+    let data = createInfoObject(result.data)
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(400).send(err)
+  })
 }
 
 module.exports.finstats = (req, res) => {
@@ -161,10 +175,10 @@ module.exports.finstats = (req, res) => {
     })
     .catch(err => {
       console.log(err);
-      res.status(500).send(data);
+      res.status(400).send(data);
     })
   })
   .catch(err => {
-    res.status(500).send(err);
+    res.status(400).send(err);
   })
 }

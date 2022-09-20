@@ -25,6 +25,8 @@ app.get('/ticker/*', controllers.getBasicInfo);
 
 app.get('/chart/*', controllers.chart);
 
+app.get('/info/*', controllers.tickerInfo)
+
 app.get('/finstats/*', controllers.finstats)
 
 app.listen(port, () => {
