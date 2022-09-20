@@ -1,6 +1,7 @@
 const axios = require('axios');
 
 const {createSharadarObject, createInfoObject} = require('./sharadar.js')
+const {createChartObject} = require('./iex.js');
 
 const cf = require('../../config.js');
 
@@ -117,10 +118,12 @@ module.exports.addTicker = (req, res) => {
 module.exports.chart = (req, res) => {
   let ticker = req.url.split('/')[2].toUpperCase();
   console.log(ticker);
+  // for chart.js - simple line
   const {Client} = require("iexjs");
     const client = new Client({api_token: cf.iex, version: "v1"});
-    client.chart({symbol: ticker, range: "1y"}).then((response) => {
-        res.send(response);
+    client.chart({symbol: ticker, range: "3m"}).then((response) => {
+        let data = createChartObject(response)
+        res.send(data);
 });
 }
 

@@ -10,12 +10,41 @@
   background-color: white;
   border: 1px solid black;
   border-radius: 5px;
-  padding: 7%;
+  padding: 1%;
+  padding-top: .5%;
   margin: .5%;
+  // max-width: 45%;
   transition: .5s;
+
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .card:hover {
   background-color: whitesmoke;
   transition: .5s;
+}
+
+.cardHeader {
+  font-size: large;
+  font-weight: bold;
+}
+
+.break {
+  flex-basis: 100%;
+  padding-bottom: 5%;
+}
+
+strong {
+  font-weight: bold;
+}
+
+.chartContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.canvas {
+  width: 80%;
 }
