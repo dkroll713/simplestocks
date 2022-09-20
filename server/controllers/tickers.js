@@ -31,6 +31,21 @@ module.exports.getTickers = (req, res) => {
   }
 }
 
+// gets price
+module.exports.price = (req, res) => {
+  let ticker = req.url.split('/')[2];
+  let url = `https://cloud.iexapis.com/stable/stock/${ticker}/price?token=${cf.iex}`
+  axios.get(url)
+  .then((result) => {
+    console.log(result.data);
+    res.send(`${result.data}`);
+  })
+  .catch(err => {
+    res.send(err);
+  })
+}
+
+// retrieves single ticker from db
 module.exports.getBasicInfo = (req, res) => {
   let ticker = req.url.split('/')[2]
   console.log(ticker.toUpperCase());

@@ -1,6 +1,7 @@
 const tickers = require('./tickers.js')
 
 module.exports.getTickers = tickers.getTickers;
+module.exports.price = tickers.price;
 module.exports.getBasicInfo = tickers.getBasicInfo;
 module.exports.addTicker = tickers.addTicker;
 module.exports.chart = tickers.chart;

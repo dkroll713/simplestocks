@@ -4,6 +4,7 @@ const axios = require('axios');
 const HomePageCard = (props) => {
   const {stock} = props;
   const [stockData, setStockData] = useState({});
+  const [price, setPrice] = useState('');
   const [loaded, setLoaded] = useState(false);
   const [loadedChart, setLoadedChart] = useState(false);
   const [chartData, setChartData] = useState([]);
@@ -25,95 +26,102 @@ const HomePageCard = (props) => {
             window.setTimeout(100);
             console.log(res.data)
             setChartData(res.data)
+            axios.get(`/price/${stock.ticker}`)
+            .then((res) => {
+              setPrice(res.data)
+            })
           })
         }
       }
     })
+    .then(() => {
+      console.log(loaded)
+    })
   }, [stock.ticker])
 
   // actually draws the chart
-  useEffect(() => {
-    if (loadedChart) {
-      const ctx = document.getElementById(`${stock.ticker}`)
-      const priceChart = new Chart(ctx, {
-        type: 'scatter',
-        data: {
-          labels: chartData.labels,
-          datasets: [{
-              label: `${stock.ticker} - 3m`,
-              data: chartData.prices,
-              pointBackgroundColor: function(context) {
-                let index = context.dataIndex;
-                let value = context.dataset.data[index];
-                if (context.dataset.data[index - 1]) {
-                  let priorValue = context.dataset.data[index - 1]
-                }
-                // console.log(value.y);
-                if (context.dataset.data[index - 1]) {
-                  return index === (chartData.prices.length - 1)  ? 'black' :
-                  value.y > context.dataset.data[index-1].y ? 'green' : 'red';
-                } else {
-                  return 'black'
-                }
-              },
-              backgroundColor: function(context) {
-                let index = context.dataIndex;
-                console.log(index);
-                let priorValue = context.dataset.data[index - 1]
-                let value = context.dataset.data[index];
-                // console.log(value);
-                return index === (chartData.prices.length - 1) ? 'black' : index % 2 ? 'blue' : 'green';
-              },
-              // borderColor: [
-              //     'rgba(255, 99, 132, 1)',
-              //     'rgba(54, 162, 235, 1)',
-              //     'rgba(255, 206, 86, 1)',
-              //     'rgba(75, 192, 192, 1)',
-              //     'rgba(153, 102, 255, 1)',
-              //     'rgba(255, 159, 64, 1)'
-              // ],
-              pointRadius: 5,
-              showLine: true,
-          }]
-        },
-        options: {
-          plugins: {
-            tooltip: {
-              callbacks: {
-                label: function(ctx) {
-                  // console.log(chartData.labels[ctx.datasetIndex])
-                  // console.log(ctx)
-                  let label = chartData.labels[ctx.datasetIndex]
-                  label += " price: " + ctx.parsed.y;
-                  return label;
-                }
-              }
-            }
-          },
-            scales: {
-              x: {
-                type: 'linear'
-              },
-              y: {
-                  beginAtZero: false
-              }
-            },
-            elements: {
-              line: {
-                tension: .1,
-              }
-            }
-          }
-        })
-    }
-  }, [loadedChart])
+  // useEffect(() => {
+  //   if (loadedChart) {
+  //     const ctx = document.getElementById(`${stock.ticker}`)
+  //     const priceChart = new Chart(ctx, {
+  //       type: 'scatter',
+  //       data: {
+  //         labels: chartData.labels,
+  //         datasets: [{
+  //             label: `${stock.ticker} - 3m`,
+  //             data: chartData.prices,
+  //             pointBackgroundColor: function(context) {
+  //               let index = context.dataIndex;
+  //               let value = context.dataset.data[index];
+  //               if (context.dataset.data[index - 1]) {
+  //                 let priorValue = context.dataset.data[index - 1]
+  //               }
+  //               // console.log(value.y);
+  //               if (context.dataset.data[index - 1]) {
+  //                 return index === (chartData.prices.length - 1)  ? 'black' :
+  //                 value.y > context.dataset.data[index-1].y ? 'green' : 'red';
+  //               } else {
+  //                 return 'black'
+  //               }
+  //             },
+  //             backgroundColor: function(context) {
+  //               let index = context.dataIndex;
+  //               console.log(index);
+  //               let priorValue = context.dataset.data[index - 1]
+  //               let value = context.dataset.data[index];
+  //               // console.log(value);
+  //               return index === (chartData.prices.length - 1) ? 'black' : index % 2 ? 'blue' : 'green';
+  //             },
+  //             // borderColor: [
+  //             //     'rgba(255, 99, 132, 1)',
+  //             //     'rgba(54, 162, 235, 1)',
+  //             //     'rgba(255, 206, 86, 1)',
+  //             //     'rgba(75, 192, 192, 1)',
+  //             //     'rgba(153, 102, 255, 1)',
+  //             //     'rgba(255, 159, 64, 1)'
+  //             // ],
+  //             pointRadius: 5,
+  //             showLine: true,
+  //         }]
+  //       },
+  //       options: {
+  //         plugins: {
+  //           tooltip: {
+  //             callbacks: {
+  //               label: function(ctx) {
+  //                 // console.log(chartData.labels[ctx.datasetIndex])
+  //                 // console.log(ctx)
+  //                 let label = chartData.labels[ctx.datasetIndex]
+  //                 label += " price: " + ctx.parsed.y;
+  //                 return label;
+  //               }
+  //             }
+  //           }
+  //         },
+  //           scales: {
+  //             x: {
+  //               type: 'linear'
+  //             },
+  //             y: {
+  //                 beginAtZero: false
+  //             }
+  //           },
+  //           elements: {
+  //             line: {
+  //               tension: .1,
+  //             }
+  //           }
+  //         }
+  //       })
+  //   }
+  // }, [loadedChart])
 
   if (loaded) {
     return (
       <div className="card">
         <div className="=cardHeaderContainer">
           <h3 className="cardHeader">
-            {stockData.ticker}
+            {stockData.ticker} - ${price}
           </h3>
         </div>
         <div class="break"></div>

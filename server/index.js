@@ -23,6 +23,8 @@ app.post('/tickers/*', controllers.addTicker);
 
 app.get('/ticker/*', controllers.getBasicInfo);
 
+app.get('/price/*', controllers.price);
+
 app.get('/chart/*', controllers.chart);
 
 app.get('/info/*', controllers.tickerInfo)
