@@ -41,11 +41,11 @@ const HomePageCard = (props) => {
               {stockData.ticker} - {stockData.name}
             </h3>
             <p>
-              ${price}
+              Most recent price: ${price}
             </p>
           </div>
           <div class="break"></div>
-          <div className={"chartContainer"+stockData.ticker}>
+          <div className={"chartContainer"}>
             <SmallChart ticker={stock.ticker} chart={chartData}/>
           </div>
           <div class="break"></div>

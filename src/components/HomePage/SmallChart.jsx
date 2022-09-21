@@ -1,108 +1,80 @@
 import React, {useState, useEffect} from 'react';
 import {Chart as ChartJS} from 'chart.js/auto'
+import 'chartjs-adapter-luxon';
+import 'chartjs-chart-financial';
+import Chart from "react-apexcharts";
 
-const SmallChart = (props) => {
-  const {ticker, chart}  = props;
+// const SmallChart = (props) => {
+  // const {ticker, chart}  = props;
 
-  useEffect(() => {
-    if (document.getElementById(ticker) && props !== undefined) {
-      let chartStatus = Chart.getChart(ticker);
-      if (chartStatus !== undefined) {
-        chartStatus.destory();
-      }
-      // document.getElementById(`${ticker}`).remove();
-      // let canvas = document.createElement('canvas');
-      // canvas.setAttribute('id', ticker)
-      // canvas.setAttribute('className', 'canvas')
-      // document.querySelector('.chartContainer'+ticker).appendChild(canvas)
-      const ctx = document.getElementById(ticker)
-      const priceChart = new Chart(ctx, {
-        type: 'scatter',
-        data: {
-          labels: chart.labels,
-          datasets: [{
-              label: `${ticker} - 3m`,
-              data: chart.prices,
-              pointBackgroundColor: function(context) {
-                let index = context.dataIndex;
-                let value = context.dataset.data[index];
-                if (context.dataset.data[index - 1]) {
-                  let priorValue = context.dataset.data[index - 1]
-                }
-                // console.log(value.y);
-                if (context.dataset.data[index - 1]) {
-                  return index === (chart.prices.length - 1)  ? 'black' :
-                  value.y > context.dataset.data[index-1].y ? 'green' : 'red';
-                } else {
-                  return 'black'
-                }
-              },
-              backgroundColor: function(context) {
-                let index = context.dataIndex;
-                // console.log(index);
-                let priorValue = context.dataset.data[index - 1]
-                let value = context.dataset.data[index];
-                // console.log(value);
-                return index === (chart.prices.length - 1) ? 'black' : index % 2 ? 'blue' : 'green';
-              },
-              // borderColor: [
-              //     'rgba(255, 99, 132, 1)',
-              //     'rgba(54, 162, 235, 1)',
-              //     'rgba(255, 206, 86, 1)',
-              //     'rgba(75, 192, 192, 1)',
-              //     'rgba(153, 102, 255, 1)',
-              //     'rgba(255, 159, 64, 1)'
-              // ],
-              pointRadius: 5,
-              showLine: true,
-          }]
+//   useEffect(() => {
+
+//     var options = {
+//       chart: {
+//         type: 'line'
+//       },
+//       series: [{
+//         name: 'sales',
+//         data: [30,40,35,50,49,60,70,91,125]
+//       }],
+//       xaxis: {
+//         categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]
+//       }
+//     }
+
+//     const priceChart = new ApexCharts(document.getElementById(ticker), options)
+
+
+//   },[chart])
+
+//   return (
+//     <>
+//       {
+//         // ticker && <canvas id={ticker} className="canvas"></canvas>
+//         ticker && priceChart
+//       }
+//     </>
+//   )
+// }
+
+class SmallChart extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+
+      series: [{
+        data: this.props.chart
+      }],
+      options: {
+        chart: {
+          type: 'candlestick',
+          height: 600,
+          width: '200%',
         },
-        options: {
-          plugins: {
-            tooltip: {
-              callbacks: {
-                label: function(ctx) {
-                  // console.log(chart.labels[ctx.datasetIndex])
-                  // console.log(ctx)
-                  let label = chart.labels[ctx.datasetIndex]
-                  label += " price: " + ctx.parsed.y;
-                  return label;
-                }
-              }
-            }
-          },
-            scales: {
-              x: {
-                type: 'linear'
-              },
-              y: {
-                  beginAtZero: false
-              }
-            },
-            elements: {
-              line: {
-                tension: .1,
-              }
-            }
+        title: {
+          text: this.props.ticker,
+          align: 'left'
+        },
+        xaxis: {
+          type: 'datetime'
+        },
+        yaxis: {
+          tooltip: {
+            enabled: true
           }
-        })
-    }
-  },[chart])
+        }
+      },
 
-  return (
-    <>
-      {
-        ticker && <canvas id={ticker} className="canvas"></canvas>
-      }
-    </>
-  )
+
+    };
+  }
+
+  render() {
+    return (
+      <Chart options={this.state.options} series={this.state.series} type="candlestick" height={400} width='150%' />
+    )
+  }
 }
 
-
-// {if (loadedChart) {
-//   return <p>Chart placeholder</p>
-// } else {
-//   return <p>Chart never loaded</p>
-// }}
-
-export default SmallChart
+export default SmallChart;
