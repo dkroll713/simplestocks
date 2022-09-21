@@ -2,7 +2,7 @@ module.exports.createChartObject = (data) => {
   let obj = {};
   obj.labels = [];
   obj.prices = [];
-  console.log(data);
+  // console.log(data);
 
   for (let x = data.length - 1; x >= 0; x--) {
     let day = data[x];

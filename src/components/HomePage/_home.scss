@@ -13,7 +13,7 @@
   padding: 1%;
   padding-top: .5%;
   margin: .5%;
-  // max-width: 45%;
+  max-width: 45%;
   transition: .5s;
 
   display: flex;
@@ -25,6 +25,11 @@
   transition: .5s;
 }
 
+.cardHeaderContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
 .cardHeader {
   font-size: large;
   font-weight: bold;

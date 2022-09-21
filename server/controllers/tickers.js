@@ -50,7 +50,7 @@ module.exports.getBasicInfo = (req, res) => {
   let ticker = req.url.split('/')[2]
   console.log(ticker.toUpperCase());
   let query = `
-    select c.ticker, i.sector, i.industry, i.scalemarketcap, i.scalerevenue
+    select c.ticker, i.name, i.sector, i.industry, i.scalemarketcap, i.scalerevenue
     from chosen c, information i
     where c.ticker = $1 and c.ticker = i.ticker
     order by c.ticker asc;

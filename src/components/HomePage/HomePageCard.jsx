@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 const axios = require('axios');
 
+import SmallChart from './SmallChart.jsx'
+
 const HomePageCard = (props) => {
   const {stock} = props;
   const [stockData, setStockData] = useState({});
@@ -11,36 +13,51 @@ const HomePageCard = (props) => {
 
   // gets stock & chart data
   useEffect(() => {
-    axios.get(`/ticker/${stock.ticker}`)
-    .then((res) => {
-      setStockData(res.data)
-      setLoaded(true);
-    })
-    .then(() => {
-      if (loaded) {
-        console.log(`ready to load chart data with ${stock.ticker}`)
-        if (loaded) {
-          axios.get(`/chart/${stock.ticker}`)
-          .then((res) => {
-            setLoadedChart(true);
-            window.setTimeout(100);
-            console.log(res.data)
-            setChartData(res.data)
-            axios.get(`/price/${stock.ticker}`)
-            .then((res) => {
-              setPrice(res.data)
-            })
-          })
-        }
-      }
-    })
-    .then(() => {
-      console.log(loaded)
-    })
+    if (stock.ticker) {
+      console.log(stock.ticker);
+      let tickerInfo = axios.get(`/ticker/${stock.ticker}`)
+      let price = axios.get(`/price/${stock.ticker}`)
+      let chart = axios.get(`/chart/${stock.ticker}`)
+      Promise.all([tickerInfo, price, chart]).then(values => {
+        console.log(values[0].data);
+        setStockData(values[0].data);
+        console.log(values[1].data);
+        setPrice(values[1].data);
+        console.log(values[2].data);
+        setChartData(values[2].data);
+        setLoaded(true);
+      })
+    }
+    // .then((res) => {
+    //   setStockData(res.data)
+    //   setLoaded(true);
+    // })
+    // .then(() => {
+    //   // if (loaded) {
+    //     if (loaded) {
+    //       axios.get(`/price/${stock.ticker}`)
+    //       .then((res) => {
+    //         setPrice(res.data)
+    //         // setLoadedChart(true);
+    //         // window.setTimeout(100);
+    //         // console.log(res.data)
+    //         // setChartData(res.data)
+    //         // axios.get(`/price/${stock.ticker}`)
+    //         // .then((res) => {
+    //         //   setPrice(res.data)
+    //         // })
+    //       })
+    //     }
+    //   // }
+    // })
+    // .then(() => {
+    //   console.log('loaded ticker info and price for', stock.ticker)
+    // })
   }, [stock.ticker])
 
   // actually draws the chart
   // useEffect(() => {
+  //   console.log(loadedChart,'loading second part of', stock.ticker)
   //   if (loadedChart) {
   //     const ctx = document.getElementById(`${stock.ticker}`)
   //     const priceChart = new Chart(ctx, {
@@ -66,7 +83,7 @@ const HomePageCard = (props) => {
   //             },
   //             backgroundColor: function(context) {
   //               let index = context.dataIndex;
-  //               console.log(index);
+  //               // console.log(index);
   //               let priorValue = context.dataset.data[index - 1]
   //               let value = context.dataset.data[index];
   //               // console.log(value);
@@ -119,14 +136,18 @@ const HomePageCard = (props) => {
   if (loaded) {
     return (
       <div className="card">
-        <div className="=cardHeaderContainer">
+        <div className="cardHeaderContainer">
           <h3 className="cardHeader">
-            {stockData.ticker} - ${price}
+            {stockData.ticker} - {stockData.name}
           </h3>
+          <p>
+            ${price}
+          </p>
         </div>
         <div class="break"></div>
         <div className="chartContainer">
-          <canvas id={stock.ticker} className="canvas"></canvas>
+          <SmallChart ticker={stock.ticker} chart={chartData}/>
+          {/* <canvas id={stock.ticker} className="canvas"></canvas> */}
         </div>
         <div class="break"></div>
         <div className="infoContainer">
