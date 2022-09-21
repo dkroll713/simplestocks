@@ -9,21 +9,21 @@ module.exports.createChartObject = (data) => {
   // console.log(data);
 
   // for area chart - stockcharts.js
-  let arr = [];
-  for (let x = 0; x < data.length; x++) {
-    let obj = {};
-    let inst = data[x];
-    console.log(inst);
-    obj['date'] = inst.date;
-    obj['open'] = inst.open;
-    obj['high'] = inst.high;
-    obj['low'] = inst.low;
-    obj['close'] = inst.close;
-    obj['volume'] = inst.volume;
-    obj['change'] = inst.change;
-    obj['changePercent'] = inst.changePercent;
-    arr.push(obj);
-  }
+  // let arr = [];
+  // for (let x = 0; x < data.length; x++) {
+  //   let obj = {};
+  //   let inst = data[x];
+  //   console.log(inst);
+  //   obj['date'] = inst.date;
+  //   obj['open'] = inst.open;
+  //   obj['high'] = inst.high;
+  //   obj['low'] = inst.low;
+  //   obj['close'] = inst.close;
+  //   obj['volume'] = inst.volume;
+  //   obj['change'] = inst.change;
+  //   obj['changePercent'] = inst.changePercent;
+  //   arr.push(obj);
+  // }
   // console.log(arr)
 
   // // chartjs scatter chart
@@ -45,6 +45,22 @@ module.exports.createChartObject = (data) => {
   //   obj.prices.push(openObj)
   //   obj.prices.push(closeObj)
   // }
+
+  //apexcharts candlestick chart
+  let arr = [];
+  for (let x = 0; x < data.length; x++) {
+    let obj = {};
+    let arr2 = [];
+    let instance = data[x];
+    obj.x = instance.date;
+    arr2.push(instance.open);
+    arr2.push(instance.high);
+    arr2.push(instance.low);
+    arr2.push(instance.close);
+    obj.y = arr2;
+    arr.push(obj);
+  }
+
 
   return arr;
 }
