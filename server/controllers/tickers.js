@@ -136,7 +136,7 @@ module.exports.chart = (req, res) => {
   // for chart.js - simple line
   const {Client} = require("iexjs");
     const client = new Client({api_token: cf.iex, version: "v1"});
-    client.chart({symbol: ticker, range: "3m"}).then((response) => {
+    client.chart({symbol: ticker, range: "6m"}).then((response) => {
         let data = createChartObject(response)
         res.send(data);
 });
@@ -152,6 +152,62 @@ module.exports.tickerInfo = (req, res) => {
   })
   .catch(err => {
     res.status(400).send(err)
+  })
+}
+
+module.exports.iexStats = (req, res) => {
+  // console.log(req.url.split('/'))
+  let ticker = req.url.split('/')[2];
+  if (req.url.split('/').length > 3) {
+    let stat = req.url.split('/')[4]
+    let url = `https://cloud.iexapis.com/stable/stock/${ticker}/stats/${stat}?token=${cf.iex}`
+    axios.get(url)
+    .then((result) => {
+      // console.log(stat);
+      res.send(String(result.data));
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    })
+  } else {
+    let url = `https://cloud.iexapis.com/stable/stock/${ticker}/stats?token=${cf.iex}`
+    axios.get(url)
+    .then((result) => {
+      // console.log(result.data);
+      res.send(result.data);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    })
+  }
+}
+
+module.exports.quote = (req, res) => {
+  let ticker = req.url.split('/')[2];
+  let url = `https://cloud.iexapis.com/stable/stock/${ticker}/quote?token=${cf.iex}`
+  axios.get(url)
+    .then((result) => {
+      // console.log(result.data);
+      res.send(result.data);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    })
+}
+
+module.exports.financials = (req, res) => {
+  let ticker = req.url.split('/')[2].toUpperCase();
+  console.log(`looking up financial statements for ${ticker}`)
+  let query = `
+    select * from financials f where f.ticker = $1
+  `
+  let values = [ticker]
+  pool.query(query, values)
+  .then(response => {
+    res.send(response.rows[0])
+  })
+  .catch(err => {
+    res.status(500).send(err)
   })
 }
 

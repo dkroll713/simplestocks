@@ -11,6 +11,7 @@ import {
 // const
 
 import HomePage from './components/HomePage/HomePage.jsx'
+import CardDetails from './components/DetailedView/CardDetails.jsx'
 
 import './_global.scss'
 
@@ -31,6 +32,7 @@ class App extends React.Component {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/detailedView/:ticker" element={<CardDetails />} />
           </Routes>
         </BrowserRouter>
       </div>
