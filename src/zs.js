@@ -14,7 +14,15 @@ const useStore = ((set => ({
   setStocks: (queryResults) => set({stocks: queryResults.data}),
   recentUpdate: false,
   setUpdate: () => set({recentUpdate: true}),
-  unsetUpdate: () => set({recentUpdate: false})
+  unsetUpdate: () => set({recentUpdate: false}),
+  currentDetail: '',
+  setCurrentDetail: (x) => set({currentDetail: x}),
+  currentChart: '',
+  setCurrentChart: (x) => set({currentChart: x}),
+  stats: {},
+  setStats: (x) => set({stats: x}),
+  financials: {},
+  setFinancials: (x) => set({financials: x})
 })))
 
 const store = create(devtools(useStore));

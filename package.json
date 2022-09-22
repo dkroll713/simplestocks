@@ -20,8 +20,6 @@
     "babel-loader": "^8.2.5",
     "body-parser": "^1.20.0",
     "chart.js": "^3.9.1",
-    "chartjs-adapter-luxon": "^1.2.0",
-    "chartjs-chart-financial": "^0.1.1",
     "cors": "^2.8.5",
     "css-loader": "^6.7.1",
     "d3": "^7.6.1",

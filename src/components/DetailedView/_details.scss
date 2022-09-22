@@ -1,0 +1,24 @@
+.cardDetails {
+  background-color: azure;
+}
+
+.detailedChartContainer {
+  height: 450px;
+  width: 100%;
+  margin: 0.5%;
+}
+
+.detailedViewToggle {
+  display: flex;
+  justify-content: center;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin: 5%;
+}
+
+span {
+  background-color: white;
+}
