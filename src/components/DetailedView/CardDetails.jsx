@@ -14,17 +14,35 @@ const CardDetails = (props) => {
   const currentChart = store(state => state.currentChart)
   const stats = store(state => state.stats)
   const setStats = store(state => state.setStats)
+  const setCurrentName = store(state => state.setCurrentName);
   const financials = store(state => state.financials);
   const setFinancials = store(state => state.setFinancials);
+  const bsDesc = store(state => state.bsDesc);
+  const isDesc = store(state => state.isDesc);
+  const cfDesc = store(state => state.cfDesc);
+  const mtDesc = store(state => state.mtDesc);
+  const setBsDesc = store(state => state.setBsDesc);
+  const setIsDesc = store(state => state.setIsDesc);
+  const setCfDesc = store(state => state.setCfDesc);
+  const setMtDesc = store(state => state.setMtDesc);
   const [currentView, setCurrentView] = useState(1)
 
   useEffect(() => {
     let SVInfo = axios.get(`/iexStats/${currentDetail}`)
     let financials = axios.get(`/financials/${currentDetail}`)
-    Promise.all([SVInfo, financials])
+    let bsDesc = axios.get('/bsDesc')
+    let isDesc = axios.get('/isDesc')
+    let cfDesc = axios.get('/cfDesc')
+    let mtDesc = axios.get('/mtDesc');
+    Promise.all([SVInfo, financials, bsDesc, isDesc, cfDesc, mtDesc])
     .then(values => {
       setStats(values[0].data)
+      setCurrentName(values[0].data.companyName)
       setFinancials(values[1].data)
+      setBsDesc(values[2].data);
+      setIsDesc(values[3].data)
+      setCfDesc(values[4].data)
+      setMtDesc(values[5].data);
     })
   }, [currentDetail])
 
@@ -67,7 +85,7 @@ const CardDetails = (props) => {
             currentView === 1
             ? <StockView stats={stats} />
             : currentView === 2
-            ? <BSView financials={financials}/>
+            ? <BSView financials={financials} definitions={bsDesc}/>
             : currentView === 3
             ? <div>Income Statement View</div>
             : currentView === 4

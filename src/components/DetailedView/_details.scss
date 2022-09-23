@@ -4,11 +4,31 @@
 
 .detailedChartContainer {
   height: 450px;
-  width: 100%;
-  margin: 0.5%;
+  width: 90%;
+  margin: 5%;
+  background-color: whitesmoke;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
 }
 
 .detailedViewToggle {
+  display: flex;
+  justify-content: center;
+}
+
+.viewContainer {
+  padding: 1%;
+  margin: 5%;
+  background-color: whitesmoke;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 5px;
+}
+
+.SVHeader {
+  font-size: 3em;
+  font-weight: bolder;
+}
+
+.headerRow {
   display: flex;
   justify-content: center;
 }

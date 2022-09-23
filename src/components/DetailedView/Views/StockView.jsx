@@ -1,20 +1,25 @@
 import React, {useState, useEffect} from 'react';
 
+import store from '../../../zs.js';
+
 function financial(x) {
   return Number.parseFloat(x).toFixed(2);
 }
 
 const StockView = (props) => {
   const { stats } = props;
+  const currentName = store(state => state.currentName)
 
   console.log('stats in sv:', stats)
 
   return (
     <div className="viewContainer">
+      <div className="headerRow">
+        <h3 className="SVHeader">
+          {currentName}
+        </h3>
+      </div>
       <div className="row">
-        <p>
-          Name: {stats.companyName}
-        </p>
         <p>
           52 week low: ${stats.week52low}
         </p>

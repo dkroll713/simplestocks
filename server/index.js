@@ -37,6 +37,14 @@ app.get(`/financials/*`, controllers.financials)
 
 app.get('/finstats/*', controllers.finstats)
 
+app.get('/bsDesc', controllers.bs);
+
+app.get('/isDesc', controllers.is);
+
+app.get('/cfDesc', controllers.cf);
+
+app.get('/mtDesc', controllers.mt)
+
 app.listen(port, () => {
   console.log(`saved choice server listening on port ${port}`)
 })

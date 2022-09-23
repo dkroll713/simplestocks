@@ -17,12 +17,22 @@ const useStore = ((set => ({
   unsetUpdate: () => set({recentUpdate: false}),
   currentDetail: '',
   setCurrentDetail: (x) => set({currentDetail: x}),
+  currentName: '',
+  setCurrentName: (x) => set({currentName: x}),
   currentChart: '',
   setCurrentChart: (x) => set({currentChart: x}),
   stats: {},
   setStats: (x) => set({stats: x}),
   financials: {},
-  setFinancials: (x) => set({financials: x})
+  setFinancials: (x) => set({financials: x}),
+  bsDesc: {},
+  setBsDesc: (x) => set({bsDesc: x}),
+  isDesc: {},
+  setIsDesc: (x) => set({isDesc: x}),
+  cfDesc: {},
+  setCfDesc: (x) => set({cfDesc: x}),
+  mtDesc: {},
+  setMtDesc: (x) => set({mtDesc: x}),
 })))
 
 const store = create(devtools(useStore));

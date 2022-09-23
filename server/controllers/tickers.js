@@ -136,7 +136,7 @@ module.exports.chart = (req, res) => {
   // for chart.js - simple line
   const {Client} = require("iexjs");
     const client = new Client({api_token: cf.iex, version: "v1"});
-    client.chart({symbol: ticker, range: "6m"}).then((response) => {
+    client.chart({symbol: ticker, range: "1m"}).then((response) => {
         let data = createChartObject(response)
         res.send(data);
 });
