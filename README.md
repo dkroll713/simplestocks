@@ -6,5 +6,6 @@ Working with IEX and Quandl to create a financial information page
 - adjust chart props so that it shows chart timeline
 - create a chart table to cache chart data when it's been called
 - tooltips for each bs/is component containing the indicator description
+  - incorporate react-tooltips for tooltips and react-table to replace layout
 - update the financials table to contain data from last 5 years
-- write a script to iterate through ticker table, pull all financials for each ticker, and upload them to the financials table
+- ~~write a script to iterate through ticker table, pull all financials for each ticker, and upload them to the financials table~~
