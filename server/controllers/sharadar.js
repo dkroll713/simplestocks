@@ -5,14 +5,16 @@ module.exports.createSharadarObject = (data) => {
   let obj = {};
 
   let columns = data.columns;
+  console.log(data)
   data = data.data[0]
+
   obj[columns[0].name]  = data[0];
   obj[columns[2].name] = data[2];
   for (let x = 6; x < data.length; x++) {
     obj[columns[x].name] = data[x];
   }
 
-  // console.log('obj', obj);
+  console.log('obj', obj);
   return obj;
 }
 

@@ -1,14 +1,14 @@
 import React, {useState, useEffect} from 'react';
 
 const StatementComponent = (props) => {
-  const { description, content, definition } = props;
+  const { description, contents, definition } = props;
   const [tooltip, setTooltip]  = useState();
 
 
 
   return (
     <div className="statementComponent">
-      <p>{definition.title} - {content}</p>
+      <p>{definition.title} - {contents}</p>
     </div>
   )
 }

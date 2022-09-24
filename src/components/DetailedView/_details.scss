@@ -39,6 +39,117 @@
   margin: 5%;
 }
 
+.statementContainer {
+  display: flex;
+}
+
+.headingContainer {
+  display: flex;
+  flex-wrap: wrap;
+  width: 15%;
+  margin-top: 1em;
+  font-weight: bold;
+}
+
+
+.lineHeading {
+  display: flex;
+  margin-top: 1em;
+  width: 100%;
+}
+
+.heading {
+  width: 75%;
+  margin-bottom: 1em;
+}
+
+.assetsContainer {
+  display: flex;
+  width: 85%
+}
+
+.column {
+  width: 20%;
+}
+
+.box {
+  text-align: center;
+}
+
+.boxFinal {
+  text-align: center;
+  margin-bottom: 1em;
+}
+
 span {
-  background-color: white;
+  text-align: center;
+}
+
+.year {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+.yearBox {
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.finalYearBox {
+  text-align: center;
+}
+
+.line {
+  display: flex;
+  justify-content: space-between;
+}
+
+.lineBreak {
+  flex-basis: 100%;
+}
+
+.greaterH {
+  display: flex;
+  align-items: flex-end;
+  color: green;
+  text-align: center;
+  width: 25%;
+  margin-bottom: 1em;
+}
+
+.lesserH {
+  display: flex;
+  align-items: flex-end;
+  color: red;
+  text-align: center;
+  width: 25%;
+  margin-bottom: 1em;
+}
+
+.greater {
+  // display: flex;
+  // align-items: flex-end;
+  color: green;
+  text-align: center;
+  // width: 100%;
+  margin-bottom: 1em;
+}
+
+.lesser {
+  // display: flex;
+  // align-items: flex-end;
+  color: red;
+  text-align: center;
+  // width: 100%;
+  margin-bottom: 1em;
+}
+
+.finalColumn {
+  // display: grid;
+  width: 20%;
+}
+
+.final {
+  margin-top: 5em;
 }

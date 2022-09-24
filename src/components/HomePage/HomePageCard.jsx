@@ -135,7 +135,7 @@ const HomePageCard = (props) => {
           <div className="infoContainer">
             <div className="cardInfoContainerOne">
               <p>
-                A(n) {stockData.sector} company specializing in {stockData.industry}.
+                {stockData.sector} company specializing in {stockData.industry}.
               </p>
               {/* <p className="sector">
                 <strong style={{'font-weight': 'bold'}}>Sector:</strong> {stockData.sector}

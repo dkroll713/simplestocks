@@ -9,11 +9,18 @@ const pool = new Pool({
   database: cf.db
 })
 
+
+// ~36 total fields
 module.exports.getBalanceSheetDescrpitons = (req, res) => {
   let query = `
-    select i.indicator, i.title, i.description
+    select *
     from indicators i
-    where i.description like '%' || '[Balance Sheet]' || '%';
+    where i.description like '%' || '[Balance Sheet]' || '%'
+    or i.description like '%' || '[Assets]' || '%'
+    or i.description like '%' || '[Investments]' || '%'
+    or i.description like '%' || '[Liabilities]' || '%'
+    or i.description like '%' || '[Debt]' || '%'
+    or i.description like '%' || '[Equity]' || '%'
   `
   pool.query(query)
   .then((result) => {
@@ -24,6 +31,7 @@ module.exports.getBalanceSheetDescrpitons = (req, res) => {
   })
 }
 
+// ~25 total fields
 module.exports.getIncomeStatementDescriptions = (req, res) => {
   let query = `
     select i.indicator, i.title, i.description
@@ -39,6 +47,7 @@ module.exports.getIncomeStatementDescriptions = (req, res) => {
   })
 }
 
+// 13 total fields
 module.exports.getCashFlowDescriptions = (req, res) => {
   let query = `
     select i.indicator, i.title, i.description
@@ -54,6 +63,7 @@ module.exports.getCashFlowDescriptions = (req, res) => {
   })
 }
 
+// ~36 total fields
 module.exports.getMetricDescriptions = (req, res) => {
   let query = `
     select i.indicator, i.title, i.description
