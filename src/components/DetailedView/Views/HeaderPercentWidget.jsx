@@ -4,7 +4,7 @@ const percent = (num) => {
   return new Intl.NumberFormat('default', {
     style: 'percent',
     maximumFractionDigits: 2,
-  }).format(num - 1)
+  }).format(num)
 }
 
 const HeaderPercentWidget = (props) => {
@@ -15,6 +15,18 @@ const HeaderPercentWidget = (props) => {
   const year4 = financials[3];
   const year5 = financials[4];
 
+  console.log(item);
+
+  const totalYearOne = (Number(year1.assets)/1000000) + (Number(year1.liabilities)/1000000) + (Number(year1.equity)/1000000);
+  const totalYearTwo = (year2.assets/1000000) + (year2.liabilities/1000000) + (year2.equity/1000000);
+  const totalYearFive = (Number(year5.assets)/1000000) + (Number(year5.liabilities)/1000000) + (Number(year5.equity)/1000000);
+
+  console.log((year1[item]/1000000), totalYearOne)
+  // console.log(typeof totalYearOne, typeof totalYearFive)
+  console.log(percent((Number(year1[item])/1000000)/ totalYearOne))
+  console.log(percent((Number(year5[item])/1000000)/ totalYearFive))
+
+  // need to adjust conditional rendering for % of total instead of % growth
   return (
     <>
     {

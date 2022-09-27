@@ -39,6 +39,10 @@ app.get('/finstats/*', controllers.finstats)
 
 app.get('/bsDesc', controllers.bs);
 
+app.get('/balanceSheetSmall/*', controllers.bsSmall)
+
+app.get('/balanceSheetBig/*', controllers.bsBig);
+
 app.get('/isDesc', controllers.is);
 
 app.get('/cfDesc', controllers.cf);

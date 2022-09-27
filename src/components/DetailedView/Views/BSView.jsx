@@ -1,5 +1,8 @@
 import React, {useState, useEffect} from 'react';
 
+import BSCompactView from './BSViews/BSCompact.jsx';
+import BSExpandedView from './BSViews/BSExpanded.jsx'
+
 import StatementComponent from './StatementComponent.jsx';
 import HeaderPercentWidget from './HeaderPercentWidget.jsx';
 import PercentWidget from './PercentWidget.jsx'
@@ -33,6 +36,15 @@ const BSView = (props) => {
   const [assets, setAssets] = useState([]);
   const [liabilities, setLiabilities] = useState([]);
   const [equity, setEquity] = useState([]);
+  const [viewType, setViewType] = useState(1);
+
+  const setCompactView = () => {
+    setViewType(1);
+  }
+
+  const setExpandedView = () => {
+    setViewType(2);
+  }
 
 
   useEffect(() => {
@@ -71,256 +83,22 @@ const BSView = (props) => {
     <>
     <div className="viewContainer">
       <h3>Balance Sheet</h3>
-      <div className="statementContainer">
-        <div className="headingContainer">
-          <div className="lineHeading">
-            <p className="heading">Total Assets</p>
-            <HeaderPercentWidget
-              financials={financials}
-              item={'assets'}
-            />
-          </div>
-          <div className="lineHeading">
-            <p className="heading">Cash & Equivalents</p>
-              <HeaderPercentWidget
-                financials={financials}
-                item={'cashneq'}
-              />
-          </div>
-          <div className="lineHeading">
-            <p className="heading">Investments</p>
-              <HeaderPercentWidget
-                financials={financials}
-                item={'investments'}
-              />
-          </div>
-          <div className="lineHeading">
-            <p className="heading">&#8594; Current Investments</p>
-              <HeaderPercentWidget
-                financials={financials}
-                item={'investmentsc'}
-              />
-          </div>
-          <div className="lineHeading">
-            <p className="heading">&#8594; Non-Current Investments</p>
-              <HeaderPercentWidget
-                financials={financials}
-                item={'investmentsnc'}
-              />
-          </div>
-        </div>
-        <div className="assetsContainer">
-          <div className="column">
-            <div className="yearBox">
-              <span>{year(financials[0].reportperiod)}</span>
-            </div>
-            <div className="box">
-              <span>
-                {statementFormat(year1.assets)}
-                <PercentWidget
-                  firstYear={year1}
-                  secondYear={year2}
-                  item={'assets'}
-                />
-              </span>
-            </div>
-            <div className="box">
-              <span>
-                {statementFormat(year1.cashneq)}
-                <PercentWidget
-                  firstYear={year1}
-                  secondYear={year2}
-                  item={'cashneq'}
-                />
-              </span>
-            </div>
-            <div className="box">
-              <span>
-                {statementFormat(year1.investments)}
-                <PercentWidget
-                  firstYear={year1}
-                  secondYear={year2}
-                  item={'investments'}
-                />
-              </span>
-            </div>
-            <div className="box">
-              <span>
-                {statementFormat(year1.investmentsc)}
-                <PercentWidget
-                  firstYear={year1}
-                  secondYear={year2}
-                  item={'investmentsc'}
-                />
-              </span>
-            </div>
-          </div>
-          <div className="column">
-            <div className="yearBox">
-              <span>{year(financials[1].reportperiod)}</span>
-            </div>
-            <div className="box">
-              <span>
-                {statementFormat(year2.assets)}
-                <PercentWidget
-                  firstYear={year2}
-                  secondYear={year3}
-                  item={'assets'}
-                />
-              </span>
-            </div>
-            <div className="box">
-              <span>
-                {statementFormat(year2.cashneq)}
-                <PercentWidget
-                  firstYear={year2}
-                  secondYear={year3}
-                  item={'cashneq'}
-                />
-              </span>
-            </div>
-            <div className="box">
-              <span>
-                {statementFormat(year2.investments)}
-                <PercentWidget
-                  firstYear={year2}
-                  secondYear={year3}
-                  item={'investments'}
-                />
-              </span>
-            </div>
-            <div className="box">
-              <span>
-                {statementFormat(year2.investmentsc)}
-                <PercentWidget
-                  firstYear={year2}
-                  secondYear={year3}
-                  item={'investmentsc'}
-                />
-              </span>
-            </div>
-          </div>
-          <div className="column">
-            <div className="yearBox">
-              <span>{year(financials[2].reportperiod)}</span>
-            </div>
-            <div className="box">
-              <span>
-                {statementFormat(year3.assets)}
-                <PercentWidget
-                  firstYear={year3}
-                  secondYear={year4}
-                  item={'assets'}
-                />
-              </span>
-            </div>
-            <div className="box">
-              <span>
-                {statementFormat(year3.cashneq)}
-                <PercentWidget
-                  firstYear={year3}
-                  secondYear={year4}
-                  item={'cashneq'}
-                />
-              </span>
-            </div>
-            <div className="box">
-              <span>
-                {statementFormat(year3.investments)}
-                <PercentWidget
-                  firstYear={year3}
-                  secondYear={year4}
-                  item={'investments'}
-                />
-              </span>
-            </div>
-            <div className="box">
-              <span>
-                {statementFormat(year3.investmentsc)}
-                <PercentWidget
-                  firstYear={year3}
-                  secondYear={year4}
-                  item={'investmentsc'}
-                />
-              </span>
-            </div>
-          </div>
-          <div className="column">
-            <div className="yearBox">
-              <span>{year(financials[3].reportperiod)}</span>
-            </div>
-            <div className="box">
-              <span>
-                {statementFormat(year4.assets)}
-                <PercentWidget
-                  firstYear={year4}
-                  secondYear={year5}
-                  item={'assets'}
-                />
-              </span>
-            </div>
-            <div className="box">
-              <span>
-                {statementFormat(year4.cashneq)}
-                <PercentWidget
-                  firstYear={year4}
-                  secondYear={year5}
-                  item={'cashneq'}
-                />
-              </span>
-            </div>
-            <div className="box">
-              <span>
-                {statementFormat(year4.investments)}
-                <PercentWidget
-                  firstYear={year4}
-                  secondYear={year5}
-                  item={'investments'}
-                />
-              </span>
-            </div>
-            <div className="box">
-              <span>
-                {statementFormat(year4.investmentsc)}
-                <PercentWidget
-                  firstYear={year4}
-                  secondYear={year5}
-                  item={'investmentsc'}
-                />
-              </span>
-            </div>
-          </div>
-          <div className="finalColumn">
-            <div className="finalYearBox">
-              <span>{year(financials[4].reportperiod)}</span>
-            </div>
-            <br />
-            <div className="boxFinal">
-              <span className="final">
-                {statementFormat(year5.assets)}
-              </span>
-            </div>
-            <br />
-            <div className="boxFinal">
-              <span className="final">
-                {statementFormat(year5.cashneq)}
-              </span>
-            </div>
-            <br />
-            <div className="boxFinal">
-              <span className="final">
-                {statementFormat(year5.investments)}
-              </span>
-            </div>
-            <br />
-            <div className="boxFinal">
-              <span className="final">
-                {statementFormat(year5.investmentsc)}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+      <button onClick={setCompactView}>
+        Compact View
+      </button>
+      <button onClick={setExpandedView}>
+        Expanded View
+      </button>
+      {
+        viewType === 1
+        ? <BSCompactView
+            definitions={definitions}
+          />
+          : <BSExpandedView
+            financials={financials}
+            definitions={definitions}
+          />
+      }
       </div>
     </>
   )
