@@ -15,32 +15,39 @@ const HeaderPercentWidget = (props) => {
   const year4 = financials[3];
   const year5 = financials[4];
 
-  console.log(item);
+  const assetItems = [
+    'assets', 'assetsc', 'assetsnc', 'cashneq', 'receivables', 'inventory', 'investments', 'investmentsc'
+    , 'oca', 'assetsnc', 'ppnenet', 'intangibles', 'investmentsnc', 'taxassets', 'onca'
+  ]
+  const liabilityItems = [
+    'liabilities', 'liabilitiesc', 'payables', 'debtc',
+    , 'liabilitiesnc', 'debtnc', 'deferredrev', 'deposits', 'oncl'
+  ]
+  const equityItems = [
+    'equity', 'retearn', 'accoci', 'apic', 'minorityinterest'
+  ]
 
   const totalYearOne = (Number(year1.assets)/1000000) + (Number(year1.liabilities)/1000000) + (Number(year1.equity)/1000000);
   const totalYearTwo = (year2.assets/1000000) + (year2.liabilities/1000000) + (year2.equity/1000000);
   const totalYearFive = (Number(year5.assets)/1000000) + (Number(year5.liabilities)/1000000) + (Number(year5.equity)/1000000);
 
-  console.log((year1[item]/1000000), totalYearOne)
-  // console.log(typeof totalYearOne, typeof totalYearFive)
-  console.log(percent((Number(year1[item])/1000000)/ totalYearOne))
-  console.log(percent((Number(year5[item])/1000000)/ totalYearFive))
-
-  // need to adjust conditional rendering for % of total instead of % growth
   return (
     <>
     {
-      year1[item] > year5[item]
+      assetItems.includes(item) && item !== 'assets'
+      ?
+      (
+        <p className="nullHeader">{percent((Number(year1[item])/1000000) / Number(year1.assets / 1000000))} of assets</p>
+      )
+      : liabilityItems.includes(item) && item !== 'liabilities'
       ? (
-        <p className="greaterH">&#9650;{percent(year1[item] / year5[item])}</p>
+        <p className="nullHeader">{percent((Number(year1[item])/1000000) / Number(year1.liabilities / 1000000))} of liabilities</p>
       )
-      : year1[item] === year5[item]
+      : equityItems.includes(item) && item !== 'equity'
       ? (
-        <p>-</p>
+        <p className="nullHeader">{percent((Number(year1[item])/1000000) / Number(year1.equity / 1000000))} of equity</p>
       )
-      : (
-        <p className="lesserH">&#9660;{percent(year1[item] / year5[item])}</p>
-      )
+      : null
     }
     </>
   )
