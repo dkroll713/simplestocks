@@ -31,6 +31,52 @@ module.exports.getBalanceSheetDescrpitons = (req, res) => {
   })
 }
 
+module.exports.balanceSheetSmall = (req, res) => {
+  let ticker = req.url.split('/')[2].toUpperCase();
+  let query = `
+  select reportperiod, assets, assetsc, assetsnc, liabilities, liabilitiesc, liabilitiesnc, equity
+  from financials
+  where ticker=$1 and dimension='MRY'
+  order by reportperiod desc;
+  `
+  let values = [ticker];
+  pool.query(query, values)
+  .then(response => {
+    res.send(response.rows);
+  })
+  .catch(err => {
+    res.send(err);
+  })
+}
+
+module.exports.balanceSheetBig = (req, res) => {
+  let ticker = req.url.split('/')[2].toUpperCase();
+  let query = `
+  select reportperiod, assets, assetsc, cashneq, receivables, inventory, investmentsc,
+  (assetsc - cashneq - receivables - inventory - investmentsc) as oca,
+  assetsnc, ppnenet, intangibles, investmentsnc, taxassets,
+  (assetsnc - ppnenet - intangibles - investmentsnc - taxassets) as onca,
+  liabilities, liabilitiesc, payables, debtc,
+  liabilitiesnc, debtnc, deferredrev, deposits,
+  (liabilitiesnc - debtnc - deferredrev - deposits) as oncl,
+  equity, retearn, accoci,
+  (equity - retearn - accoci) as apic,
+  (assets - liabilities - equity) as minorityinterest, depamor,
+  workingcapital, invcap, tbvps, bvps
+  from financials
+  where ticker=$1 and dimension='MRY'
+  order by reportperiod desc;
+  `
+  let values = [ticker];
+  pool.query(query, values)
+  .then(response => {
+    res.send(response.rows);
+  })
+  .catch(err => {
+    res.send(err);
+  })
+}
+
 // ~25 total fields
 module.exports.getIncomeStatementDescriptions = (req, res) => {
   let query = `

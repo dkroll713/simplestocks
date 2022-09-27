@@ -14,6 +14,8 @@ module.exports.financials = tickers.financials;
 module.exports.finstats = tickers.finstats;
 
 module.exports.bs = statements.getBalanceSheetDescrpitons;
+module.exports.bsSmall = statements.balanceSheetSmall;
+module.exports.bsBig = statements.balanceSheetBig;
 module.exports.is = statements.getIncomeStatementDescriptions;
 module.exports.cf = statements.getCashFlowDescriptions;
 module.exports.mt = statements.getMetricDescriptions;

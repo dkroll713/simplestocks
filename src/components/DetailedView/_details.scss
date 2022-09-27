@@ -46,7 +46,8 @@
 .headingContainer {
   display: flex;
   flex-wrap: wrap;
-  width: 15%;
+  align-items: center;
+  width: 40%;
   margin-top: 1em;
   font-weight: bold;
 }
@@ -54,22 +55,43 @@
 
 .lineHeading {
   display: flex;
-  margin-top: 1em;
+  align-items: center;
+  // margin-top: 1em;
   width: 100%;
 }
 
 .heading {
-  width: 75%;
-  margin-bottom: 1em;
+  min-width: 80%;
+  // max-width: 75%;
+  font-size: small;
+  text-align: left;
+  vertical-align: baseline;
+  // margin-bottom: 0px;
+}
+
+.finalHeading {
+  min-width: 80%;
+  // max-width: 75%;
+  font-size: small;
+  text-align: left;
+  margin-bottom: 2em;
 }
 
 .assetsContainer {
   display: flex;
-  width: 85%
+  justify-content: space-between;
+  // min-width: 1080px;
+  width: 1080px;
+  // max-width: 100%;
+  overflow-x: scroll;
 }
 
 .column {
-  width: 20%;
+  min-width: 200px;
+}
+
+.colBreak {
+  width: 200px;
 }
 
 .box {
@@ -78,7 +100,7 @@
 
 .boxFinal {
   text-align: center;
-  margin-bottom: 1em;
+  margin-bottom: 2em;
 }
 
 span {
@@ -147,7 +169,7 @@ span {
 
 .finalColumn {
   // display: grid;
-  width: 20%;
+  width: 200px;
 }
 
 .final {
