@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 
 import StatementComponent from '../StatementComponent.jsx';
+import HeaderColumn from '../HeaderColumn.jsx'
 import HeaderPercentWidget from '../HeaderPercentWidget.jsx';
 import PercentWidget from '../PercentWidget.jsx'
 
@@ -57,57 +58,11 @@ const BSCompactView = (props) => {
       loaded
       ? (
         <div className="statementContainer">
-          <div className="headingContainer">
-            <div className="lineHeading">
-              <span className="heading">Total Assets</span>
-              <HeaderPercentWidget
-                financials={financials}
-                item={'assets'}
-              />
-            </div>
-            <div className="lineHeading">
-              <span className="heading">&#8594; Current Assets</span>
-                <HeaderPercentWidget
-                  financials={financials}
-                  item={'assetsc'}
-                />
-            </div>
-            <div className="lineHeading">
-              <span className="heading">&#8594; Non-Current Assets</span>
-                <HeaderPercentWidget
-                  financials={financials}
-                  item={'assetsnc'}
-                />
-            </div>
-            <div className="lineHeading">
-              <span className="heading">Total Liabilities</span>
-              <HeaderPercentWidget
-                financials={financials}
-                item={'liabilities'}
-              />
-            </div>
-            <div className="lineHeading">
-              <span className="heading">&#8594; Current Liabilities</span>
-                <HeaderPercentWidget
-                  financials={financials}
-                  item={'liabilitiesc'}
-                />
-            </div>
-            <div className="lineHeading">
-              <span className="heading">&#8594; Non-Current Liabilities</span>
-                <HeaderPercentWidget
-                  financials={financials}
-                  item={'liabilitiesnc'}
-                />
-            </div>
-            <div className="lineHeading">
-              <span className="finalHeading">Equity</span>
-              <HeaderPercentWidget
-                financials={financials}
-                item={'equity'}
-              />
-            </div>
-          </div>
+          <HeaderColumn
+            financials={financials}
+            definitions={definitions}
+            type={'compact'}
+          />
           <div className="colBreak">
 
           </div>

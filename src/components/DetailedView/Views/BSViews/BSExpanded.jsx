@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 
 import StatementComponent from '../StatementComponent.jsx';
+import HeaderColumn from '../HeaderColumn.jsx'
 import HeaderPercentWidget from '../HeaderPercentWidget.jsx';
 import PercentWidget from '../PercentWidget.jsx'
 
@@ -41,7 +42,12 @@ const BSExpandedView = (props) => {
   return (
     <>
       <div className="statementContainer">
-        <div className="headingContainer">
+        <HeaderColumn
+          financials={financials}
+          definitions={definitions}
+          type={'expanded'}
+        />
+        {/* <div className="headingContainer">
           <div className="lineHeading">
             <p className="heading">Total Assets</p>
             <HeaderPercentWidget
@@ -77,7 +83,7 @@ const BSExpandedView = (props) => {
                 item={'investmentsnc'}
               />
           </div>
-        </div>
+        </div> */}
         <div className="assetsContainer">
           <div className="column">
             <div className="yearBox">
@@ -264,25 +270,25 @@ const BSExpandedView = (props) => {
               <span>{year(financials[4].reportperiod)}</span>
             </div>
             <br />
-            <div className="boxFinal">
+            <div className="boxFinalE">
               <span className="final">
                 {statementFormat(year5.assets)}
               </span>
             </div>
             <br />
-            <div className="boxFinal">
+            <div className="boxFinalE">
               <span className="final">
                 {statementFormat(year5.cashneq)}
               </span>
             </div>
             <br />
-            <div className="boxFinal">
+            <div className="boxFinalE">
               <span className="final">
                 {statementFormat(year5.investments)}
               </span>
             </div>
             <br />
-            <div className="boxFinal">
+            <div className="boxFinalE">
               <span className="final">
                 {statementFormat(year5.investmentsc)}
               </span>
