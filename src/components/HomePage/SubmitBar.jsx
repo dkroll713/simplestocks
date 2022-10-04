@@ -8,6 +8,10 @@ const axios = require('axios');
 const Submit = () => {
   const current = currentStore(state => state.current)
   const setCurrent = currentStore(state => state.setCurrent);
+  const validTickers = currentStore(state => state.validTickers);
+  const setValidTickers = currentStore(state => state.setValidTickers);
+  const loaded = currentStore(state => state.loaded);
+  const setLoaded = currentStore(state => state.setLoaded);
   const getStocks = store(state => state.getStocks)
   const update = store(state => state.update);
   const setUpdate = store(state => state.setUpdate);
@@ -38,7 +42,22 @@ const Submit = () => {
     })
   }
 
-  if (current.length < 1 || current.length > 6) {
+  useEffect(() => {
+    console.log(loaded);
+    if (!loaded) {
+      axios.get('/validTickers')
+      .then(res => {
+        // console.log(res.data);
+        setValidTickers(res.data);
+        if (!loaded) {
+          setLoaded()
+        }
+      })
+    }
+  }, [loaded])
+
+  if (!validTickers.includes(current.toUpperCase())) {
+    // console.log('invalid submission')
     return (
       <div className="stockBar">
         <h5>Enter a stock:</h5>
@@ -47,6 +66,7 @@ const Submit = () => {
       </div>
     )
   } else {
+    // console.log('valid submission')
     return (
       <div className="stockBar">
         <h5>Enter a stock:</h5>

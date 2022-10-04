@@ -2,6 +2,7 @@ const axios = require('axios');
 
 const {createSharadarObject, createInfoObject} = require('./sharadar.js')
 const {createChartObject} = require('./iex.js');
+const {createTrie} = require('./ds.js');
 
 const cf = require('../../config.js');
 
@@ -217,4 +218,20 @@ module.exports.finstats = (req, res) => {
   .catch(err => {
     res.status(400).send(err);
   })
+}
+
+module.exports.getValidTickers = (req, res) => {
+  let query = `
+  select i.ticker
+  from information i
+  where i.isdelisted = 'N'
+  `
+  pool.query(query)
+  .then(response => {
+    res.send(createTrie(response.rows))
+  })
+  .catch(err => {
+    res.send(err);
+  })
+
 }
