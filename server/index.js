@@ -17,6 +17,8 @@ app.options('*', cors());
 
 app.use(express.static(path.join(__dirname,"../public",)));
 
+app.get('/validTickers', controllers.getValidTickers);
+
 app.get('/tickers', controllers.getTickers)
 
 app.post('/tickers/*', controllers.addTicker);

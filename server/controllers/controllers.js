@@ -12,6 +12,7 @@ module.exports.quote = tickers.quote;
 module.exports.iexStats = tickers.iexStats;
 module.exports.financials = tickers.financials;
 module.exports.finstats = tickers.finstats;
+module.exports.getValidTickers = tickers.getValidTickers;
 
 module.exports.bs = statements.getBalanceSheetDescrpitons;
 module.exports.bsSmall = statements.balanceSheetSmall;
