@@ -37,15 +37,15 @@ const HeaderPercentWidget = (props) => {
       assetItems.includes(item) && item !== 'assets'
       ?
       (
-        <p className="nullHeader">{percent((Number(year1[item])/1000000) / Number(year1.assets / 1000000))} of assets</p>
+        <p className="nullHeader">{percent((Number(year1[item])/1000000) / Number(year1.assets / 1000000))} <p className="percentFooter">of assets</p></p>
       )
       : liabilityItems.includes(item) && item !== 'liabilities'
       ? (
-        <p className="nullHeader">{percent((Number(year1[item])/1000000) / Number(year1.liabilities / 1000000))} of liabilities</p>
+        <p className="nullHeader">{percent((Number(year1[item])/1000000) / Number(year1.liabilities / 1000000))} <p className="percentFooter">of liabilities</p></p>
       )
       : equityItems.includes(item) && item !== 'equity'
       ? (
-        <p className="nullHeader">{percent((Number(year1[item])/1000000) / Number(year1.equity / 1000000))} of equity</p>
+        <p className="nullHeader">{percent((Number(year1[item])/1000000) / Number(year1.equity / 1000000))} <p className="percentFooter">of equity</p></p>
       )
       : null
     }

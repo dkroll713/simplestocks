@@ -9,11 +9,6 @@ const percent = (num) => {
 
 const PercentWidget = (props) => {
   const { firstYear, secondYear, item } = props;
-  // const year1 = financials[0];
-  // const year2 = financials[1];
-  // const year3 = financials[2];
-  // const year4 = financials[3];
-  // const year5 = financials[4];
 
   return (
     <>
@@ -24,7 +19,7 @@ const PercentWidget = (props) => {
       )
       : firstYear[item] === secondYear[item]
       ? (
-        <p>-</p>
+        <p className="nullChange"> - 0%</p>
       )
       : (
         <p className="lesser">&#9660;{percent(firstYear[item] / secondYear[item])}</p>

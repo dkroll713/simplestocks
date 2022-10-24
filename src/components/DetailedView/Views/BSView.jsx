@@ -13,10 +13,6 @@ const year = (date) => {
   return date.getFullYear();
 }
 
-// const statementFormat = (number) => {
-//   return new Intl.NumberFormat('en-EN', { style: 'currency', currency: 'USD' }).format(number)
-// }
-
 const statementFormat = (number) => {
   if (number > 0) {
     number = number/1000
