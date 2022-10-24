@@ -5,10 +5,10 @@ const HeaderColumn = (props) => {
   const { financials, definitions, type } = props;
   const headingsE = [
     'assets', 'assetsc', 'assetsnc', 'cashneq', 'receivables', 'inventory', 'investments', 'investmentsc'
-    , 'oca', 'assetsnc', 'ppnenet', 'intangibles', 'investmentsnc', 'taxassets', 'onca'
+    , 'assetsnc', 'ppnenet', 'intangibles', 'investmentsnc', 'taxassets',
     , 'liabilities', 'liabilitiesc', 'payables', 'debtc'
-    , 'liabilitiesnc', 'debtnc', 'deferredrev', 'deposits', 'oncl'
-    , 'equity', 'retearn', 'accoci', 'apic', 'minorityinterest', 'depamor'
+    , 'liabilitiesnc', 'debtnc', 'deferredrev', 'deposits',
+    , 'equity', 'retearn', 'accoci',
   ]
 
   const headingsC = [
@@ -75,3 +75,13 @@ const HeaderColumn = (props) => {
 }
 
 export default HeaderColumn
+
+
+
+// const headingsE = [
+//   'assets', 'assetsc', 'assetsnc', 'cashneq', 'receivables', 'inventory', 'investments', 'investmentsc'
+//   , 'oca', 'assetsnc', 'ppnenet', 'intangibles', 'investmentsnc', 'taxassets', 'onca'
+//   , 'liabilities', 'liabilitiesc', 'payables', 'debtc'
+//   , 'liabilitiesnc', 'debtnc', 'deferredrev', 'deposits', 'oncl'
+//   , 'equity', 'retearn', 'accoci', 'apic', 'minorityinterest', 'depamor'
+// ]

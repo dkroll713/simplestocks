@@ -4,16 +4,13 @@ import StatementComponent from '../StatementComponent.jsx';
 import HeaderColumn from '../HeaderColumn.jsx'
 import HeaderPercentWidget from '../HeaderPercentWidget.jsx';
 import PercentWidget from '../PercentWidget.jsx'
+import Column from '../Column.jsx';
 
 const year = (date) => {
   date = new Date(date);
   console.log(date.getFullYear());
   return date.getFullYear();
 }
-
-// const statementFormat = (number) => {
-//   return new Intl.NumberFormat('en-EN', { style: 'currency', currency: 'USD' }).format(number)
-// }
 
 const statementFormat = (number) => {
   if (number > 0) {
@@ -47,45 +44,27 @@ const BSExpandedView = (props) => {
           definitions={definitions}
           type={'expanded'}
         />
-        {/* <div className="headingContainer">
-          <div className="lineHeading">
-            <p className="heading">Total Assets</p>
-            <HeaderPercentWidget
-              financials={financials}
-              item={'assets'}
-            />
-          </div>
-          <div className="lineHeading">
-            <p className="heading">Cash & Equivalents</p>
-              <HeaderPercentWidget
-                financials={financials}
-                item={'cashneq'}
-              />
-          </div>
-          <div className="lineHeading">
-            <p className="heading">Investments</p>
-              <HeaderPercentWidget
-                financials={financials}
-                item={'investments'}
-              />
-          </div>
-          <div className="lineHeading">
-            <p className="heading">&#8594; Current Investments</p>
-              <HeaderPercentWidget
-                financials={financials}
-                item={'investmentsc'}
-              />
-          </div>
-          <div className="lineHeading">
-            <p className="heading">&#8594; Non-Current Investments</p>
-              <HeaderPercentWidget
-                financials={financials}
-                item={'investmentsnc'}
-              />
-          </div>
-        </div> */}
         <div className="assetsContainer">
-          <div className="column">
+          <Column
+            financials={year1}
+            priorYear={year2}
+          />
+          <Column
+            financials={year2}
+            priorYear={year3}
+          />
+          <Column
+            financials={year3}
+            priorYear={year4}
+          />
+          <Column
+            financials={year4}
+            priorYear={year5}
+          />
+          {/* <FinalColumn
+            financials={year5}
+          /> */}
+          {/* <div className="column">
             <div className="yearBox">
               <span>{year(financials[0].reportperiod)}</span>
             </div>
@@ -293,7 +272,7 @@ const BSExpandedView = (props) => {
                 {statementFormat(year5.investmentsc)}
               </span>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
