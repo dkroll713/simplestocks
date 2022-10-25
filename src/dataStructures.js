@@ -1,7 +1,7 @@
-
 const TrieNode = function() {
   this.children = {};
   this.isWord = false;
+  this.parent = null;
 }
 
 const Trie = function(end = false, value = '') {
@@ -18,9 +18,10 @@ Trie.prototype.insert = function(word, node = this.root) {
   node.isWord = true;
 }
 
-Trie.prototype.getAllWords = function(node = this.root) {
+getAllWords = function(node = this.root) {
   let words = [];
   let root = node.children;
+  // console.log(root);
   const getWord = (top, word = '') => {
       // console.log(top)
       for (const key in top) {
@@ -41,6 +42,36 @@ Trie.prototype.getAllWords = function(node = this.root) {
   }
   getWord(root)
   return words
+}
+
+getAllWordsStartingWith = function(input, node = this.root) {
+  let starting = input;
+  let words = [];
+  // console.log(node);
+  let root = node.children;
+  input = input.split('');
+  // console.log(root);
+  if (input.length > 0) {
+      while (input.length > 0) {
+          if (!root.children) {
+              root = root[input[0]];
+          } else if (root.children) {
+              root = root.children[input[0]];
+          }
+          input.splice(0, 1);
+          if (!root) return [];
+      }
+
+      words = getAllWords(root);
+      // if (root.isWord) words.unshift(starting)
+      for (let x = 0; x < words.length; x++) {
+          let word = words[x];
+          // console.log(word);
+          words[x] = starting + word
+      }
+  }
+
+  return words;
 }
 
 Trie.prototype.search = function(word, node = this.root) {
@@ -66,13 +97,5 @@ Trie.prototype.startsWith = function(prefix, node = this.root) {
   return true;
 }
 
-
-module.exports.createTrie = (data) => {
-  console.log(data);
-  let trie = new Trie();
-  data.map(row => {
-    trie.insert(row.ticker);
-  })
-  console.log(trie)
-  return trie;
-}
+module.exports.getAllWords = getAllWords;
+module.exports.getAllWordsStartingWith = getAllWordsStartingWith;

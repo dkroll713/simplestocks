@@ -28,7 +28,6 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <p>Hi</p>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage />} />

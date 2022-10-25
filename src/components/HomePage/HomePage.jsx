@@ -41,7 +41,9 @@ const HomePage = () => {
       <Submit />
 
       <div>
-        <p>You've entered the following stocks:</p>
+        <div className="cardContainerHeader">
+          <p>You've added the following stocks to your watchlist:</p>
+        </div>
         <div className="cardContainer">
           {stocks.map((stock, x) => {
             return (

@@ -3,9 +3,13 @@ import {devtools} from 'zustand/middleware'
 
 const useStore = ((set => ({
   current: '',
-  setCurrent: (e) => set({current: e.target.value}),
+  setCurrent: (e) => set({current: e}),
   validTickers: [],
   setValidTickers: (e) => set({validTickers: e}),
+  branch: {},
+  setBranch: (e) => set({branch: e}),
+  dropDown: [],
+  setDropDown: (e) => set({dropDown: e}),
   loaded: false,
   setLoaded: () => set({loaded: true})
 })))
