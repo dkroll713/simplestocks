@@ -28,3 +28,14 @@ The search bar has an event handler, where when the input changes, a getAllWords
 ![Dropdown populates with possible valid inputs based on input so far](https://user-images.githubusercontent.com/41023883/198709284-60feabbd-8f5f-4121-a11a-8d134811aec8.png)
 
 If the search bar input is not a valid ticker, the submit button cannot be pressed and it cannot be added to a watch list. Valid tickers come from Quandl's Sharadar dataset.
+
+## Charts
+Once stocks are added to the user's watchlist, they appear in the user's home page. Charts are generated using ApexCharts, data is sourced from iexCloud.
+
+![Chart examples](https://user-images.githubusercontent.com/41023883/198731015-8bfcc0c6-a6be-4501-850d-507b1d804714.png)
+
+
+## Financial Statements 
+Users can select a card and see a detailed view of the financial statements for a given company. Financial statement data is sourced from Sharadar.
+
+![Financial statement example](https://user-images.githubusercontent.com/41023883/198731423-08a0d862-d922-4307-80ae-9e5a8ce320d8.png)
