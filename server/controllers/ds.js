@@ -74,5 +74,6 @@ module.exports.createTrie = (data) => {
     trie.insert(row.ticker);
   })
   console.log(trie)
-  return trie;
+  const tickers = trie.getAllWords();
+  return tickers;
 }

@@ -110,6 +110,7 @@ const Submit = () => {
       </div>
     )
   } else {
+    // console.log('valid submission')
     return (
       <div className="stockBar">
         <h5 className="submitHeader">Enter a stock:</h5>

@@ -124,68 +124,29 @@
 
 .lineHeading {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 16px;
-  height: 38px;
-  width: 84%;
-}
-
-.lineHeadingE {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 16px;
-  height: 38px;
-  width: 84%;
+  margin-top: 1em;
+  width: 100%;
 }
 
 .heading {
-  min-width: 120px;
-  // max-width: 75%;
-  // font-size: small;
-  text-align: left;
-  vertical-align: baseline;
-  // margin-bottom: 0px;
-}
-
-.finalHeading {
-  min-width: 80%;
-  // max-width: 75%;
-  // font-size: small;
-  text-align: left;
-  margin-bottom: 2em;
+  width: 75%;
+  margin-bottom: 1em;
 }
 
 .assetsContainer {
   display: flex;
-  justify-content: space-between;
-  // min-width: 1080px;
-  width: 1080px;
-  // max-width: 100%;
-  overflow-x: scroll;
+  width: 85%
 }
 
 .column {
-  min-width: 200px;
-}
-
-.colBreak {
-  width: 200px;
+  width: 20%;
 }
 
 .box {
   text-align: center;
-  height: 39px;
-  margin-top: 15px;
 }
 
 .boxFinal {
-  text-align: center;
-  margin-bottom: 2em;
-}
-
-.boxFinalE {
   text-align: center;
   margin-bottom: 1em;
 }
@@ -202,7 +163,7 @@ span {
 
 .yearBox {
   text-align: center;
-  margin-bottom: 27px;
+  margin-bottom: 1em;
 }
 
 .finalYearBox {
@@ -236,21 +197,6 @@ span {
   margin-bottom: 1em;
 }
 
-.nullHeader {
-  // font-size: smaller;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  width: 150px;
-  font-weight: 300;
-}
-
-.percentFooter {
-  font-weight: bold;
-  font-style: italic;
-  font-size: smaller;
-}
-
 .greater {
   // display: flex;
   // align-items: flex-end;
@@ -269,13 +215,9 @@ span {
   margin-bottom: 1em;
 }
 
-.nullChange {
-  margin-bottom: 1em;
-}
-
 .finalColumn {
   // display: grid;
-  width: 200px;
+  width: 20%;
 }
 
 .final {
