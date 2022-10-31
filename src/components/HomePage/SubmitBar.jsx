@@ -34,8 +34,7 @@ const Submit = () => {
     if (validTickers.includes(e.target.value.toUpperCase())) {
       console.log(e.target.value,'true')
       setOpen(true);
-    } else {
-      console.log(e.target.value,'false')
+    } else if (e.target.value.length === 0) {
       setOpen(false);
     }
   }

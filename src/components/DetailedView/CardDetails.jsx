@@ -1,6 +1,10 @@
 import React, {useState, useEffect} from 'react';
 const axios = require('axios');
 
+import {
+  useNavigate
+} from "react-router-dom";
+
 import './_details.scss'
 
 import store from '../../zs.js'
@@ -66,10 +70,15 @@ const CardDetails = (props) => {
     setCurrentView(5);
   }
 
+  const navigate = useNavigate();
+  const goBack = () => {
+    navigate('/')
+  }
+
   return (
     <>
       <div className="cardDetails">
-        Card Details for {currentDetail}
+        <button onClick={goBack}>Go Back</button>
         <div className="detailedChartContainer">
           <HugeChart ticker={currentDetail} chart={currentChart} />
         </div>

@@ -63,12 +63,17 @@ getAllWordsStartingWith = function(input, node = this.root) {
       }
 
       words = getAllWords(root);
+      console.log(starting);
       // if (root.isWord) words.unshift(starting)
+      console.log('before prefix:', words)
       for (let x = 0; x < words.length; x++) {
           let word = words[x];
-          // console.log(word);
-          words[x] = starting + word
+          console.log('before prefix:', word);
+          if (words[x][0] !== starting) words[x] = starting + word
+          // words[x] = starting + word
+          console.log('after prefix:', words[x]);
       }
+      console.log('after prefix:', words)
   }
 
   return words;

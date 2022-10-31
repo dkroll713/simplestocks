@@ -96,7 +96,7 @@ module.exports.chart = (req, res) => {
   // for chart.js - simple line
   const {Client} = require("iexjs");
     const client = new Client({api_token: cf.iex, version: "v1"});
-    client.chart({symbol: ticker, range: "1m"}).then((response) => {
+    client.chart({symbol: ticker, range: "6m"}).then((response) => {
         let data = createChartObject(response)
         res.send(data);
 });
@@ -234,4 +234,20 @@ module.exports.getValidTickers = (req, res) => {
     res.send(err);
   })
 
+}
+
+// gets last 3 news items
+module.exports.getNews = (req, res) => {
+  let ticker = req.url.split('/')[2].toUpperCase();
+  console.log('searching news for:',ticker);
+  let url = `https://cloud.iexapis.com/stable/stock/${ticker}/news/last/3?token=${cf.iex}`
+  console.log(url);
+  axios.get(url)
+  .then((response) => {
+    console.log(response.data);
+    res.send(response.data);
+  })
+  .catch((err) => {
+    console.log('error fetching news:', err);
+  })
 }
