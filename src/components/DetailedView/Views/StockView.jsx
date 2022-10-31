@@ -43,7 +43,7 @@ const StockView = (props) => {
         <div>
           <div className="topBox">
             <div className="leftBox">
-
+                {/* nothing */}
             </div>
             <div className="rightBox">
               <div className="linkBox">
