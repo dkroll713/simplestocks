@@ -40,7 +40,7 @@ const StockView = (props) => {
           {currentName}
         </h3>
       </div>
-        <div>
+        <div className="contentContainer">
           <div className="topBox">
             <div className="leftBox">
 
