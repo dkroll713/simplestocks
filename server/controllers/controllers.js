@@ -1,6 +1,6 @@
 const tickers = require('./tickers.js')
-
 const statements = require('./statements.js')
+const sec = require('./sec.js');
 
 module.exports.getTickers = tickers.getTickers;
 module.exports.price = tickers.price;
@@ -21,3 +21,6 @@ module.exports.bsBig = statements.balanceSheetBig;
 module.exports.is = statements.getIncomeStatementDescriptions;
 module.exports.cf = statements.getCashFlowDescriptions;
 module.exports.mt = statements.getMetricDescriptions;
+
+module.exports.CIK = sec.getCIK;
+module.exports.float = sec.getFloat;

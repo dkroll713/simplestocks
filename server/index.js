@@ -53,6 +53,11 @@ app.get('/cfDesc', controllers.cf);
 
 app.get('/mtDesc', controllers.mt)
 
+// sec-related endpoints
+app.get('/cik/*', controllers.CIK)
+
+app.get('/float/*', controllers.float);
+
 app.listen(port, () => {
   console.log(`saved choice server listening on port ${port}`)
 })
