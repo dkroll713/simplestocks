@@ -24,3 +24,4 @@ module.exports.mt = statements.getMetricDescriptions;
 
 module.exports.CIK = sec.getCIK;
 module.exports.float = sec.getFloat;
+module.exports.insiders = sec.insiders;

@@ -58,6 +58,8 @@ app.get('/cik/*', controllers.CIK)
 
 app.get('/float/*', controllers.float);
 
+app.get('/insiders/*', controllers.insiders)
+
 app.listen(port, () => {
   console.log(`saved choice server listening on port ${port}`)
 })

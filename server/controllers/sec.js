@@ -63,3 +63,18 @@ module.exports.getFloat = (req, res) => {
     res.status(500).send(err)
   })
 }
+
+module.exports.insiders = (req, res) => {
+  let ticker = req.url.split('/')[2].toLowerCase();
+  let url = `http://openinsider.com/search?q=${ticker}`
+
+  axios.get(url)
+  .then(response => {
+    console.log(response.data)
+    res.send(response.data);
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).send(err);
+  })
+}
