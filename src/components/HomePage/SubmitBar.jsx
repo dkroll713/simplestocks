@@ -57,6 +57,8 @@ const Submit = () => {
       } else {
         console.log(res)
         let input = document.getElementById('input')
+        setCurrent('')
+        setDropDown([])
         input.value = '';
       }
     })

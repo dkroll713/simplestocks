@@ -5,6 +5,8 @@ const axios = require('axios');
 import store from '../../../zs.js';
 import cardStore from './cardState.js';
 
+import Info from './OverviewViews/Info.jsx'
+
 function financial(x) {
   return Number.parseFloat(x).toFixed(2);
 }
@@ -43,13 +45,13 @@ const StockView = (props) => {
         <div className="contentContainer">
           <div className="topBox">
             <div className="leftBox">
-
+              <Info />
             </div>
             <div className="rightBox">
-              <div className="linkBox">
+              {/* <div className="linkBox">
                 <a className="link" href={`https://www.google.com/search?q=${currentDetail}+stock&hl=en&biw=1244&bih=1333&tbm=nws&sxsrf=ALiCzsaTyt6KLXU0-2fKUfIsXUSi50nYMQ%3A1666726577101&ei=sTpYY6TeBam2qtsPtIWICA&ved=0ahUKEwjk-sKskPz6AhUpm2oFHbQCAgEQ4dUDCA0&uact=5&oq=kalu+stock&gs_lp=Egxnd3Mtd2l6LW5ld3O4AQP4AQEyBRAAGIAEMgUQABiABDIFEAAYgAQyBRAAGIAEMgYQABgWGB4yBhAAGBYYHjIGEAAYFhgeMgYQABgWGB4yBhAAGBYYHjIIEAAYFhgeGA_CAgcQABixAxhDwgIHEAAYgAQYA8ICCRAAGIAEGAoYA8ICDRAAGIAEGLEDGIMBGArCAggQABixAxiDAcICBBAAGEPCAgUQABiRAsICBxAAGIAEGApIgQhQgwNYigdwAHgAyAEAkAEAmAFNoAHjA6oBATeIBgE&sclient=gws-wiz-news`}>Google news</a>
                 <a className="link" href={`https://seekingalpha.com/symbol/${currentDetail}/news`}>SeekingAlpha</a>
-              </div>
+              </div> */}
               <div className="newsBox">
                 {
                   news ?

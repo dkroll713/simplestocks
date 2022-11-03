@@ -71,7 +71,12 @@ module.exports.insiders = (req, res) => {
   axios.get(url)
   .then(response => {
     console.log(response.data)
-    res.send(response.data);
+    let data = response.data;
+    data = data.split('tbody')
+    data.map(chunk => {
+      console.log(chunk);
+    })
+    res.send(data[3]);
   })
   .catch(err => {
     console.log(err);
