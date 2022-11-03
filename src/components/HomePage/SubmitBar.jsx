@@ -31,7 +31,8 @@ const Submit = () => {
     // console.log(e.target.value);
     setCurrent(e.target.value);
     setDropDown(dataStructures.getAllWordsStartingWith(e.target.value.toUpperCase(), branch));
-    if (validTickers.includes(e.target.value.toUpperCase())) {
+    // if (validTickers.includes(e.target.value.toUpperCase())) {
+    if (e.target.value.length > 0) {
       console.log(e.target.value,'true')
       setOpen(true);
     } else if (e.target.value.length === 0) {
@@ -88,24 +89,27 @@ const Submit = () => {
       <div className="stockBar">
         <h5 className="submitHeader">Enter a stock:</h5>
         <div className="searchBar">
-          <input
-            id="input"
-            placeholder="enter a stock ticker"
-            autocomplete="off"
-            onChange={handleChange}>
-          </input>
-          {
-            open ? (
-              <ul className="dropDown">
-                {dropDown.map((item, x) => {
-                  if (x < 30) {
-                    return (<li onClick={handleDropDown}>{item}</li>)
-                  }
-                })}
-              </ul>
-            ) : null
-          }
-          <button className="button-84" role="button" onClick={handleClick} disabled="true">Submit</button>
+          <div>
+            <input
+              id="input"
+              placeholder="enter a stock ticker"
+              autocomplete="off"
+              onChange={handleChange}>
+            </input>
+            <span className="valid red">&#10005;</span>
+            {
+              open ? (
+                <ul className="dropDown">
+                  {dropDown.map((item, x) => {
+                    if (x < 30) {
+                      return (<li onClick={handleDropDown}>{item}</li>)
+                    }
+                  })}
+                </ul>
+              ) : null
+            }
+          </div>
+          <button className="button-84-disabled" role="button" onClick={handleClick} disabled="true">Submit</button>
         </div>
       </div>
     )
@@ -114,23 +118,26 @@ const Submit = () => {
       <div className="stockBar">
         <h5 className="submitHeader">Enter a stock:</h5>
         <div className="searchBar">
-          <input
-            id="input"
-            placeholder="enter a stock ticker"
-            autocomplete="off"
-            onChange={handleChange}>
-          </input>
-          {
-            open ? (
-              <ul className="dropDown">
-                {dropDown.map((item, x) => {
-                  if (x < 30) {
-                    return (<li onClick={handleDropDown}>{item}</li>)
-                  }
-                })}
-              </ul>
-            ) : null
-          }
+          <div>
+            <input
+              id="input"
+              placeholder="enter a stock ticker"
+              autocomplete="off"
+              onChange={handleChange}>
+            </input>
+            <span className="valid green">&#10004;</span>
+            {
+              open ? (
+                <ul className="dropDown">
+                  {dropDown.map((item, x) => {
+                    if (x < 30) {
+                      return (<li onClick={handleDropDown}>{item}</li>)
+                    }
+                  })}
+                </ul>
+              ) : null
+            }
+          </div>
           <button className="button-84" role="button" onClick={handleClick}>Submit</button>
         </div>
       </div>
