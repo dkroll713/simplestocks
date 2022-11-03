@@ -7,10 +7,14 @@ import infoStore from './info.js'
 
 import './_info.scss'
 
+import InfoComponent from './InfoComponent.jsx';
+
 const Info = (props) => {
   const currentDetail = store(state => state.currentDetail)
   const float = infoStore(state => state.float);
   const setFloat = infoStore(state => state.setFloat);
+  const description = infoStore(state => state.description);
+  const setDescription = infoStore(state => state.setDescription);
 
   useEffect(() => {
     // axios.get(`/insiders/${currentDetail}`)
@@ -22,13 +26,11 @@ const Info = (props) => {
     axios.get(`/float/${currentDetail}`)
     .then(res => {
       console.log(res.data);
+      setDescription(res.data.description)
       let floatVal = res.data.val;
       floatVal = String(floatVal).split('');
-      console.log(floatVal.length)
-
       let count = 1;
       for (let x = floatVal.length-1; x >= 0; x--) {
-        console.log(floatVal[x])
         if (count % 3 === 0) floatVal.splice(x,0,',')
         count++;
       }
@@ -37,11 +39,13 @@ const Info = (props) => {
     })
   },[])
 
+  const onHover = (e) => {
+    console.log('hovering');
+  }
+
   return (
     <div className="infoBox">
-      <p>Information</p>
-
-      <p>Float: {float}</p>
+      <InfoComponent title="Float" value={float} desc={description} />
     </div>
   )
 }
