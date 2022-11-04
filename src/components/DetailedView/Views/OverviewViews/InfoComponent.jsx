@@ -22,7 +22,9 @@ const InfoComponent = (props) => {
       <p onMouseEnter={openTT} onMouseLeave={closeTT}>{props.title}: <span>{props.value}</span></p>
       {
         open ? (
-          <div className="tooltip">{props.desc}</div>
+          <div className="tooltip">
+            <div>{props.desc}</div>
+          </div>
         ) : null
       }
     </div>
