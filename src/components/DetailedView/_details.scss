@@ -133,6 +133,7 @@
   margin-top: 16px;
   height: 38px;
   width: 84%;
+  position: relative;
 }
 
 .lineHeadingE {
@@ -142,6 +143,7 @@
   margin-top: 16px;
   height: 38px;
   width: 84%;
+  position: relative;
 }
 
 .heading {
@@ -150,7 +152,19 @@
   // font-size: small;
   text-align: left;
   vertical-align: baseline;
+  position: relative;
   // margin-bottom: 0px;
+}
+
+.tooltip {
+  position: absolute;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: antiquewhite;
+  right: -200px;
+  top: -20px;
+  width: 300px;
+  z-index: 20;
 }
 
 .finalHeading {

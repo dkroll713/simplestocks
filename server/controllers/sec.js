@@ -1,4 +1,5 @@
 const axios = require('axios');
+const tabletojson = require('tabletojson').Tabletojson;
 
 const cf = require('../../config.js');
 
@@ -67,19 +68,56 @@ module.exports.getFloat = (req, res) => {
 module.exports.insiders = (req, res) => {
   let ticker = req.url.split('/')[2].toLowerCase();
   let url = `http://openinsider.com/search?q=${ticker}`
+  tabletojson.convertUrl(
+    url,
+    function(tablesAsJson) {
+      // console.log(tablesAsJson[11])
 
-  axios.get(url)
-  .then(response => {
-    console.log(response.data)
-    let data = response.data;
-    data = data.split('tbody')
-    data.map(chunk => {
-      console.log(chunk);
-    })
-    res.send(data[3]);
-  })
-  .catch(err => {
-    console.log(err);
-    res.status(500).send(err);
-  })
+      let obj = parseInsiders(tablesAsJson[11])
+
+      res.send(obj)
+    }
+  )
+  // axios.get(url)
+  // .then(response => {
+  //   console.log(response.data)
+  //   let data = response.data;
+  //   data = data.split('tbody')
+  //   data.map(chunk => {
+  //     console.log(chunk);
+  //   })
+  //   res.send(data[3]);
+  // })
+  // .catch(err => {
+  //   console.log(err);
+  //   res.status(500).send(err);
+  // })
+}
+
+const parseInsiders = (table) => {
+  const insiders = {
+    "positive": 0,
+    "negative": 0,
+    "total":0,
+  };
+  for (let x = 0; x < table.length; x++) {
+    let tx = table[x];
+    // console.log(tx["Insider Name"])
+    if (!insiders[tx["Insider Name"]]) {
+      insiders[tx["Insider Name"]] = {}
+    }
+    let split = tx["Value"].split('$')
+    let sign = split[0];
+    let amount = parseFloat(split[1].split(',').join(''));
+    // console.log(amount);
+    if (sign === '+') {
+      insiders.positive += amount;
+      insiders.total += amount;
+    } else if (sign === '-') {
+      insiders.negative += amount;
+      insiders.total -= amount;
+    }
+  }
+  console.log(insiders)
+  return insiders
 }
