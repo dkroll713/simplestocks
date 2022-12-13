@@ -28,10 +28,8 @@ const Submit = () => {
   const [open, setOpen] = React.useState(false);
 
   const handleChange = (e) => {
-    // console.log(e.target.value);
     setCurrent(e.target.value);
     setDropDown(dataStructures.getAllWordsStartingWith(e.target.value.toUpperCase(), branch));
-    // if (validTickers.includes(e.target.value.toUpperCase())) {
     if (e.target.value.length > 0) {
       console.log(e.target.value,'true')
       setOpen(true);

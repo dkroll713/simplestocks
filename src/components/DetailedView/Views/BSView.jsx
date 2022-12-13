@@ -47,6 +47,7 @@ const BSView = (props) => {
     let assetsArr = [];
     let liabilitiesArr = [];
     let equityArr = [];
+    console.log(definitions);
     definitions.map((item, x) => {
       if (item.description.includes('[Assets]') || item.description.includes('[Investments]')) {
         assetsArr.push(item)
