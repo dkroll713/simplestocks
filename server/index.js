@@ -13,9 +13,13 @@ app.use((req, res, next) => {
   next();
 })
 
+app.use(bodyParser())
+
 app.options('*', cors());
 
 app.use(express.static(path.join(__dirname,"../public",)));
+
+app.post('/getUser', controllers.getUser);
 
 app.get('/validTickers', controllers.getValidTickers);
 

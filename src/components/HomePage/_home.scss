@@ -1,5 +1,16 @@
 // @media only screen and (min-width: 768px) {
 
+  .headerBar {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .rightHeader {
+    width: 40%;
+    display: flex;
+    justify-content: space-around;
+  }
+
   .cardContainer {
     display: flex;
     flex-wrap: wrap;

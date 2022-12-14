@@ -33,6 +33,8 @@ const useStore = ((set => ({
   setCfDesc: (x) => set({cfDesc: x}),
   mtDesc: {},
   setMtDesc: (x) => set({mtDesc: x}),
+  user: null,
+  setUser: (x) => set({user: x})
 })))
 
 const store = create(devtools(useStore));
