@@ -25,7 +25,7 @@ app.get('/validTickers', controllers.getValidTickers);
 
 app.get('/news*', controllers.getNews);
 
-app.get('/tickers', controllers.getTickers)
+app.post('/tickers', controllers.getTickers)
 
 app.post('/tickers/*', controllers.addTicker);
 

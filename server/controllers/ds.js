@@ -53,7 +53,7 @@ Trie.prototype.search = function(word, node = this.root) {
       }
       node = child;
   }
-  console.log(result)
+  // console.log(result)
   return node.isWord
 }
 
@@ -68,11 +68,11 @@ Trie.prototype.startsWith = function(prefix, node = this.root) {
 
 
 module.exports.createTrie = (data) => {
-  console.log(data);
+  // console.log(data);
   let trie = new Trie();
   data.map(row => {
     trie.insert(row.ticker);
   })
-  console.log(trie)
+  // console.log(trie)
   return trie;
 }

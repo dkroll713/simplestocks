@@ -24,6 +24,7 @@ const Submit = () => {
   const update = store(state => state.update);
   const setUpdate = store(state => state.setUpdate);
   const unsetUpdate = store(state => state.unsetUpdate);
+  const verifiedUser = store((state) => state.user);
 
   const [open, setOpen] = React.useState(false);
 
@@ -48,7 +49,8 @@ const Submit = () => {
 
   const handleClick = (e) => {
     // console.log('click');
-    axios.post(`/tickers/${current.toUpperCase()}`)
+    console.log(verifiedUser);
+    axios.post(`/tickers/${current.toUpperCase()}`,{user: verifiedUser})
     .then((res) => {
       if (res.status === 500) {
         console.log(res.data);
@@ -61,7 +63,7 @@ const Submit = () => {
       }
     })
     .then(() => {
-      getStocks();
+      getStocks(verifiedUser);
     })
     .catch(err => {
       console.log(err);

@@ -11,7 +11,7 @@ const pool = new Pool({
 
 module.exports.getUser = (req, res) => {
   let user = req.body;
-  console.log(user.user);
+  // console.log(user.user);
   let query = `select * from users u where u.nickname='${user.user.nickname}'`
   pool.query(query).then((results) => {
     if (results.rows.length === 0) {
@@ -21,7 +21,7 @@ module.exports.getUser = (req, res) => {
       })
       // res.send(`need to create user entry for ${user.nickname}`)
     } else {
-      console.log(results.rows[0]);
+      // console.log(results.rows[0]);
       res.send(results.rows[0]);
     }
   })
