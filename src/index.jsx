@@ -7,8 +7,9 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+import {Auth0Provider} from "@auth0/auth0-react";
 
-// const
+const {auth0client, auth0domain} = require('../config.js')
 
 import HomePage from './components/HomePage/HomePage.jsx'
 import CardDetails from './components/DetailedView/CardDetails.jsx'
@@ -39,4 +40,13 @@ class App extends React.Component {
   }
 };
 
-reactDom.render(<App />, document.getElementById('root'));
+reactDom.render(
+  <Auth0Provider
+    domain={auth0domain}
+    clientId={auth0client}
+    redirectUri={window.location.origin}
+  >
+    <App />
+  </Auth0Provider>,
+  document.getElementById('root')
+);

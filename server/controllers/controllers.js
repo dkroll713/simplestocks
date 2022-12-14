@@ -1,6 +1,9 @@
+const auth = require('./auth.js');
 const tickers = require('./tickers.js')
 const statements = require('./statements.js')
 const sec = require('./sec.js');
+
+module.exports.getUser = auth.getUser;
 
 module.exports.getTickers = tickers.getTickers;
 module.exports.price = tickers.price;
