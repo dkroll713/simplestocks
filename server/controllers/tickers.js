@@ -18,9 +18,10 @@ const pool = new Pool({
 
 // get tickers from db
 module.exports.getTickers = (req, res) => {
+  console.log(req.body);
   if (req.url.includes('tickers')) {
     pool.query(
-      `select * from chosen c order by c.ticker asc`
+      `select * from chosen c where c.user_id=${req.body.user} order by c.ticker asc`
     )
     .then((result) => {
       console.log(result.rows);
@@ -71,21 +72,29 @@ module.exports.getBasicInfo = (req, res) => {
 module.exports.addTicker = (req, res) => {
   if (req.url.includes('tickers')) {
     console.log(req.url);
+    console.log('body',req.body);
     let ticker = req.url.split('/')[2]
     console.log(ticker.toUpperCase());
     let timestamp = Date.now()
     console.log(timestamp)
-    let query = `insert into "chosen"(date,ticker) values($1, $2)`
-    let values = [timestamp, `${ticker}`]
-    // submit ticker to db
-    pool.query(
-      query, values
-    ).then(() => {
-      res.send('submitted ticker to db')
-    })
-    .catch((err) => {
-      console.log(`error adding ${ticker} to db; error: ${err}`)
-      res.status(400).send(`error adding ${ticker} to db; error: ${err}`)
+    let check = `select * from chosen where ticker='${ticker}' and user_id='${req.body.user}'`
+    pool.query(check).then(result => {
+      if (result.rows.length === 0) {
+        let query = `insert into "chosen"(date,ticker,user_id) values($1, $2, $3)`
+        let values = [timestamp, `${ticker}`, req.body.user]
+        // submit ticker to db
+        pool.query(
+          query, values
+        ).then(() => {
+          res.send('submitted ticker to db')
+        })
+        .catch((err) => {
+          console.log(`error adding ${ticker} to db; error: ${err}`)
+          res.status(400).send(`error adding ${ticker} to db; error: ${err}`)
+        })
+      } else {
+        res.send('user already added ticker to db')
+      }
     })
   }
 }

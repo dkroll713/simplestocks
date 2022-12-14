@@ -5,8 +5,8 @@ const axios = require('axios');
 
 const useStore = ((set => ({
   stocks: ['AAPL','DIS','GOOG','NFLX','TSLA','NVDA','AMD'],
-  getStocks: () => {
-    axios.get('/tickers')
+  getStocks: (user) => {
+    axios.post('/tickers',{user:user})
     .then((res) => {
       set({stocks: res.data})
     })
@@ -34,7 +34,9 @@ const useStore = ((set => ({
   mtDesc: {},
   setMtDesc: (x) => set({mtDesc: x}),
   user: null,
-  setUser: (x) => set({user: x})
+  setUser: (x) => set({user: x}),
+  loaded: false,
+  setLoaded: (x) => set({loaded: true}),
 })))
 
 const store = create(devtools(useStore));

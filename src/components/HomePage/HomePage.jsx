@@ -20,34 +20,52 @@ const HomePage = () => {
   const unsetUpdate = store((state) => state.unsetUpdate)
   const verifiedUser = store((state) => state.user);
   const setUser = store((state) => state.setUser);
+  const loaded = store((state) => state.loaded);
+  const setLoaded = store((state) => state.setLoaded);
   const { user, isAuthenticated, isLoading } = useAuth0();
 
   useEffect(() => {
+    console.log(user);
     if (user) {
       axios.post('/getUser', {user})
       .then((res) => {
         console.log(res.data)
-        setUser(res.data.nickname)
+        setUser(res.data.user_id)
+        setLoaded();
+        console.log(loaded);
+      })
+      .then(() => {
+        if (verifiedUser) {
+          console.log('firing ticker load for', verifiedUser);
+          axios.post('/tickers',{user:verifiedUser})
+          .then((response) => {
+            setStocks(response)
+          })
+          .catch(err => {
+            console.log('failed to fetch tickers:', err)
+          })
+        }
       })
       .catch((err) => {
         console.log('error fetching user from db:', err);
       })
     }
-  })
+  }, [user,verifiedUser,loaded])
 
-  useEffect(() => {
-    axios.get('/tickers')
-    .then((res) => {
-      setStocks(res)
-    })
-  }, [update])
+  // useEffect(() => {
+
+  // }, [])
 
   useEffect(() => {
     if (update) {
-      axios.get('/tickers')
+      console.log('firing updated ticker load');
+      axios.post('/tickers',{user:verifiedUser})
       .then((res) => {
         setStocks(res);
         unsetUpdate();
+      })
+      .catch(err => {
+        console.log('failed to update tickers')
       })
     }
   }, [update])
@@ -74,7 +92,11 @@ const HomePage = () => {
         </div>
       </div>
     </div>
-  )} else {
+  )} else if (isLoading) {
+    return (
+      <div>...loading...</div>
+    )
+  } else {
     return (
       <Welcome />
     )
