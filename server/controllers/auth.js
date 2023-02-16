@@ -1,6 +1,6 @@
 const cf = require('../../config.js')
 
-const {Pool} = require('pg');
+const { Pool } = require('pg');
 const pool = new Pool({
   user: cf.user,
   password: cf.password,
