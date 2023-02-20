@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/spf13/viper"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/pgdialect"
 	"github.com/uptrace/bun/driver/pgdriver"
@@ -37,6 +38,26 @@ func main() {
 	}
 }
 
+func viperEnvKey(key string) string {
+	// setConfigFile explicitly defines path, name, and extension of config file
+	// viper will use this
+	viper.SetConfigFile("../.env")
+
+	err := viper.ReadInConfig()
+
+	if err != nil {
+		log.Fatalf("Error reading config file %s", err)
+
+		// viper.Get() returns an empty interface
+	}
+	value, ok := viper.Get(key).(string)
+	if !ok {
+		log.Fatalf("invalid type assertion")
+	}
+	log.Print("value:", value)
+	return value
+}
+
 type DBUser struct {
 	Index    int64  `json:"index"`
 	User_id  int64  `json:"user_id"`
@@ -45,7 +66,7 @@ type DBUser struct {
 
 func checkAuthentication(uname string) (map[string]any, error) {
 	ctx := context.Background()
-	dsn := "postgres://ubuntu:birdhouse@52.207.198.14:5432/stocks?sslmode=disable"
+	dsn := viperEnvKey("URI")
 	sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
 	db := bun.NewDB(sqldb, pgdialect.New())
 	db.AddQueryHook(bundebug.NewQueryHook(
