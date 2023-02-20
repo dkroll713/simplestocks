@@ -41,7 +41,7 @@ func main() {
 func viperEnvKey(key string) string {
 	// setConfigFile explicitly defines path, name, and extension of config file
 	// viper will use this
-	viper.SetConfigFile("../.env")
+	viper.SetConfigFile(".env")
 
 	err := viper.ReadInConfig()
 
