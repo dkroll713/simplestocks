@@ -8,7 +8,7 @@
     "build": "webpack --mode=production",
     "dev": "webpack serve --open",
     "server": "nodemon server/index.js",
-    "go": "go run server-go/index.go"
+    "go": "go run server-go/main.go"
   },
   "author": "",
   "license": "ISC",

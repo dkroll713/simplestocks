@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import store from '../../zs.js'
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -27,30 +27,31 @@ const HomePage = () => {
   useEffect(() => {
     console.log(user);
     if (user) {
-      axios.post('/getUser', {user})
-      .then((res) => {
-        console.log(res.data)
-        setUser(res.data.user_id)
-        setLoaded();
-        console.log(loaded);
-      })
-      .then(() => {
-        if (verifiedUser) {
-          console.log('firing ticker load for', verifiedUser);
-          axios.post('/tickers',{user:verifiedUser})
-          .then((response) => {
-            setStocks(response)
-          })
-          .catch(err => {
-            console.log('failed to fetch tickers:', err)
-          })
-        }
-      })
-      .catch((err) => {
-        console.log('error fetching user from db:', err);
-      })
+      axios.post('/getUser', { user })
+        .then((res) => {
+          console.log(res.data)
+          setUser(res.data.user_id)
+          setLoaded();
+          console.log('loaded:', loaded);
+          console.log('user verified?', verifiedUser)
+        })
+        .then(() => {
+          if (verifiedUser) {
+            console.log('firing ticker load for', verifiedUser);
+            axios.post('/tickers', { user: verifiedUser })
+              .then((response) => {
+                setStocks(response)
+              })
+              .catch(err => {
+                console.log('failed to fetch tickers:', err)
+              })
+          }
+        })
+        .catch((err) => {
+          console.log('error fetching user from db:', err);
+        })
     }
-  }, [user,verifiedUser,loaded])
+  }, [user, verifiedUser, loaded])
 
   // useEffect(() => {
 
@@ -59,40 +60,42 @@ const HomePage = () => {
   useEffect(() => {
     if (update) {
       console.log('firing updated ticker load');
-      axios.post('/tickers',{user:verifiedUser})
-      .then((res) => {
-        setStocks(res);
-        unsetUpdate();
-      })
-      .catch(err => {
-        console.log('failed to update tickers')
-      })
+      axios.post('/tickers', { user: verifiedUser })
+        .then((res) => {
+          setStocks(res);
+          unsetUpdate();
+        })
+        .catch(err => {
+          console.log('failed to update tickers')
+        })
     }
   }, [update])
 
-  if (verifiedUser) {return (
-    <div>
-      <HeaderBar />
-
-      <Submit />
-
+  if (verifiedUser) {
+    return (
       <div>
-        <div className="cardContainerHeader">
-          <p>You've added the following stocks to your watchlist:</p>
-        </div>
-        <div className="cardContainer">
-          {stocks.map((stock, x) => {
-            return (
-              <HomePageCard
-                stock={stock}
-                key={x+'ticker'}
-              />
-            )
-          })}
+        <HeaderBar />
+
+        <Submit />
+
+        <div>
+          <div className="cardContainerHeader">
+            <p>You've added the following stocks to your watchlist:</p>
+          </div>
+          <div className="cardContainer">
+            {stocks.map((stock, x) => {
+              return (
+                <HomePageCard
+                  stock={stock}
+                  key={x + 'ticker'}
+                />
+              )
+            })}
+          </div>
         </div>
       </div>
-    </div>
-  )} else if (isLoading) {
+    )
+  } else if (isLoading) {
     return (
       <div>...loading...</div>
     )
