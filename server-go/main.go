@@ -97,7 +97,7 @@ func checkAuthentication(uname string) (map[string]any, error) {
 		}
 	}
 	if m["index"] == nil || m["user_id"] == nil || m["nickname"] == nil {
-		var insert string = `insert into "users" (nickname) values($1) returning user_id`
+		var insert string = `insert into "users" (nickname) values(?) returning user_id`
 		_, err = db.Exec(insert, uname)
 		if err != nil {
 			panic(err)
@@ -163,6 +163,7 @@ func userHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	nickname := user.User.Nickname
+	// nickname := "abcd"
 	resp, err := checkAuthentication(string(nickname))
 	if err != nil {
 		panic(err)
