@@ -76,9 +76,9 @@ func (trie *Trie) getAllWords() []string {
 	var words []string
 	root := trie.root.children
 	words = getWord(root, "", words)
-	fmt.Println("unsorted words:", words)
+	// fmt.Println("unsorted words:", words)
 	words = sortWords(words)
-	fmt.Println("sorted words:", words)
+	// fmt.Println("sorted words:", words)
 	return words
 }
 
@@ -98,43 +98,12 @@ func getWord(top map[string]TrieNode, wordSoFar string, words []string) []string
 }
 
 func sortWords(words []string) []string {
-	sorted := false
-	for !sorted {
-		sorted = true
-		for word := range words {
-			if word >= 0 && word < len(words)-1 {
-				length1 := len(words[word])
-				length2 := len(words[word+1])
-				var longest int
-				var shorter string
-				if length1 >= length2 {
-					longest = length2
-					shorter = words[word+1]
-				} else {
-					longest = length1
-					shorter = words[word]
-				}
-				fmt.Println(words[word][0] == words[word+1][0])
-				if words[word][0] == words[word+1][0] {
-					// compare letter by letter
-					for i := 0; i < longest; i++ {
-						fmt.Println(words[word], words[word][i], words[word+1], words[word+1][i], words[word][i] > words[word+1][i])
-						if words[word][i] > words[word+1][i] && length2 <= length1 {
-							fmt.Println("swapping", words[word], "with", words[word+1])
-							tmp := words[word+1]
-							words[word+1] = words[word]
-							words[word] = tmp
-							sorted = false
-						}
-					}
-				}
-				fmt.Println(shorter)
-				if words[word][0] > words[word+1][0] {
-					tmp := words[word+1]
-					words[word+1] = words[word]
-					words[word] = tmp
-					sorted = false
-				}
+	for i := 0; i < len(words); i++ {
+		for j := i + 1; j < len(words); j++ {
+			if words[i] > words[j] {
+				temp := words[i]
+				words[i] = words[j]
+				words[j] = temp
 			}
 		}
 	}
@@ -142,13 +111,28 @@ func sortWords(words []string) []string {
 	return words
 }
 
+func (trie *Trie) getAllWordsStartingWith(input string) []string {
+	var words []string
+	root := trie.root.children
+	for i := 0; i < len(input); i++ {
+		char := string(input[i])
+		// fmt.Println(char)
+		root = root[char].children
+	}
+
+	// fmt.Println(root)
+	words = getWord(root, input, words)
+	words = sortWords(words)
+	return words
+}
+
 func main() {
 	trie := createTrie()
-	fmt.Println("beginning trie:", trie)
-
+	// fmt.Println("beginning trie:", trie)
 	trie.root = trie.insert("help", &trie.root)
 	trie.root = trie.insert("hello", &trie.root)
 	trie.root = trie.insert("hella", &trie.root)
+	trie.root = trie.insert("holla", &trie.root)
 	trie.root = trie.insert("aa", &trie.root)
 	trie.root = trie.insert("he", &trie.root)
 	trie.root = trie.insert("abcde", &trie.root)
@@ -156,7 +140,11 @@ func main() {
 	trie.root = trie.insert("abb", &trie.root)
 	trie.root = trie.insert("abcd", &trie.root)
 	trie.root = trie.insert("ab", &trie.root)
-	fmt.Println("\nending trie:", trie.root, "\n")
+	// fmt.Println("\nending trie:", trie.root, "\n")
 
 	fmt.Println("words in trie:", trie.getAllWords())
+
+	fmt.Println("words starting with h:", trie.getAllWordsStartingWith("h"))
+	fmt.Println("words starting with hel:", trie.getAllWordsStartingWith("hel"))
+	fmt.Println("words starting with ab:", trie.getAllWordsStartingWith("ab"))
 }
