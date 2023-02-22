@@ -5,7 +5,6 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -33,6 +32,7 @@ func main() {
 	http.Handle("/", fs)                     // serves static files
 	http.HandleFunc("/getUser", userHandler) // if route is /getUser, register  this handleFunc
 	http.HandleFunc("/validTickers", trieHandler)
+	http.HandleFunc("/tickers", tickersHandler)
 
 	log.Print("Listening on " + port + "...")
 	err := http.ListenAndServe(port, nil)
@@ -173,7 +173,7 @@ func userHandler(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	fmt.Println("database response:", resp)
+	// fmt.Println("database response:", resp)
 
 	json.NewEncoder(w).Encode(resp)
 }
@@ -183,7 +183,6 @@ func trieHandler(w http.ResponseWriter, r *http.Request) {
 	db := dbConnect()
 	ctx := context.Background()
 	rows, err := db.QueryContext(ctx, query)
-	// cols, _ := rows.Columns()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -195,22 +194,85 @@ func trieHandler(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		// log.Print(id, ticker)
 		tickers = append(tickers, ticker)
 	}
-	// fmt.Println(tickers)
 	trie := ds.CreateTrie()
-	// fmt.Println("trie:", &trie.Root)
-	// // root := &trie.root
+
 	for t := range tickers {
-		// fmt.Println(string(tickers[t]))
-		// fmt.Println(trie)
-		// trie.Insert(string(tickers[t]), root)
 		trie.Root = trie.Insert(string(tickers[t]), &trie.Root)
-		// trie.root = trie.Insert("help", &trie.root)
 	}
 
-	// fmt.Println("trie:", &trie.Root)
-
 	json.NewEncoder(w).Encode(trie)
+}
+
+type VerifiedUser struct {
+	User int `json:"user"`
+}
+
+type Tickers struct {
+	Id      int    `json:"id"`
+	Date    string `json:"date"`
+	Ticker  string `json:"ticker"`
+	User_id int    `json:"ticker"`
+}
+
+func tickersHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/tickers" {
+		http.Error(w, "404 not found", http.StatusNotFound)
+		return
+	}
+	if r.Method != "POST" {
+		http.Error(w, "method is not supported", http.StatusNotFound)
+		return
+	}
+
+	var verifiedUser VerifiedUser
+	var unmarshalErr *json.UnmarshalTypeError
+	decoder := json.NewDecoder(r.Body)
+	// fmt.Println(r.Body)
+	decoder.DisallowUnknownFields()
+	// fmt.Println(decoder.Decode(&verifiedUser))
+	err := decoder.Decode(&verifiedUser)
+	if err != nil {
+		if errors.As(err, &unmarshalErr) {
+			http.Error(w, "Bad Request. Wrong Type provided for field "+unmarshalErr.Field, http.StatusBadRequest)
+		} else {
+			http.Error(w, "Bad Request "+err.Error(), http.StatusBadRequest)
+		}
+		return
+	}
+	db := dbConnect()
+	query := `select * from chosen c where c.user_id=? order by c.ticker asc`
+	ctx := context.Background()
+	rows, err := db.QueryContext(ctx, query, verifiedUser.User)
+	cols, _ := rows.Columns()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+	var tickers []map[string]interface{}
+	m := make(map[string]interface{})
+	for rows.Next() {
+		columns := make([]interface{}, len(cols))
+		columnPointers := make([]interface{}, len(cols))
+		for i, _ := range columns {
+			columnPointers[i] = &columns[i]
+		}
+
+		// scan the result into the column pointers
+		if err := rows.Scan(columnPointers...); err != nil {
+			return
+		}
+
+		// create a map and retrieve the value for each column from the pointers slice
+		// storing it in the map with the name of the column as the key
+
+		for i, colName := range cols {
+			val := columnPointers[i].(*interface{})
+			m[colName] = *val
+		}
+		tickers = append(tickers, m)
+	}
+
+	json.NewEncoder(w).Encode(tickers)
 }
