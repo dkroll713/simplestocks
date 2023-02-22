@@ -9,6 +9,8 @@ import (
 	"log"
 	"net/http"
 
+	ds "go-server/lib"
+
 	"github.com/spf13/viper"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/pgdialect"
@@ -30,6 +32,7 @@ func main() {
 	port := ":3001"
 	http.Handle("/", fs)                     // serves static files
 	http.HandleFunc("/getUser", userHandler) // if route is /getUser, register  this handleFunc
+	http.HandleFunc("/validTickers", trieHandler)
 
 	log.Print("Listening on " + port + "...")
 	err := http.ListenAndServe(port, nil)
@@ -64,8 +67,7 @@ type DBUser struct {
 	Nickname string `json:"nickname"`
 }
 
-func checkAuthentication(uname string) (map[string]any, error) {
-	ctx := context.Background()
+func dbConnect() *bun.DB {
 	dsn := viperEnvKey("URI")
 	sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
 	db := bun.NewDB(sqldb, pgdialect.New())
@@ -73,7 +75,13 @@ func checkAuthentication(uname string) (map[string]any, error) {
 		bundebug.WithVerbose(true),
 		bundebug.FromEnv("BUNDEBUG"),
 	))
+	return db
+}
 
+func checkAuthentication(uname string) (map[string]any, error) {
+	db := dbConnect()
+
+	ctx := context.Background()
 	rows, err := db.QueryContext(ctx, "SELECT * FROM users WHERE nickname=?", uname)
 	cols, _ := rows.Columns()
 	if err != nil {
@@ -85,19 +93,6 @@ func checkAuthentication(uname string) (map[string]any, error) {
 	// nicknames := make([]string, 0)
 	m := make(map[string]interface{})
 	for rows.Next() {
-		// var index int
-		// var user_id int
-		// var nickname string
-		// if err := rows.Scan(&index, &user_id, &nickname); err != nil {
-		// 	log.Fatal(err)
-		// }
-		// nicknames = append(nicknames, nickname)
-		// userObj["index"] = index
-		// userObj["user_id"] = user_id
-		// userObj["nickname"] = nickname
-
-		// create a slice of interfaces to represent each column
-		// and a second slice to contain pointers to each item in the columns slice
 		columns := make([]interface{}, len(cols))
 		columnPointers := make([]interface{}, len(cols))
 		for i, _ := range columns {
@@ -125,18 +120,6 @@ func checkAuthentication(uname string) (map[string]any, error) {
 		}
 	}
 	return m, nil
-	// users := make([]DBUser, 0)
-	// return &users, nil
-	// err := db.NewRaw(
-	// 	"SELECT * FROM users where nickname=?", uname,
-	// 	bun.Ident("stocks"),
-	// ).Scan(ctx, &users)
-	// if err != nil {
-	// 	return nil, err
-	// } else {
-	// 	return &users, nil
-	// }
-
 }
 
 type User struct {
@@ -193,4 +176,41 @@ func userHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("database response:", resp)
 
 	json.NewEncoder(w).Encode(resp)
+}
+
+func trieHandler(w http.ResponseWriter, r *http.Request) {
+	query := `select i.ticker from information i where i.isdelisted='N'`
+	db := dbConnect()
+	ctx := context.Background()
+	rows, err := db.QueryContext(ctx, query)
+	// cols, _ := rows.Columns()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+	var tickers []string
+	for rows.Next() {
+		var ticker string
+		err := rows.Scan(&ticker)
+		if err != nil {
+			log.Fatal(err)
+		}
+		// log.Print(id, ticker)
+		tickers = append(tickers, ticker)
+	}
+	// fmt.Println(tickers)
+	trie := ds.CreateTrie()
+	// fmt.Println("trie:", &trie.Root)
+	// // root := &trie.root
+	for t := range tickers {
+		// fmt.Println(string(tickers[t]))
+		// fmt.Println(trie)
+		// trie.Insert(string(tickers[t]), root)
+		trie.Root = trie.Insert(string(tickers[t]), &trie.Root)
+		// trie.root = trie.Insert("help", &trie.root)
+	}
+
+	// fmt.Println("trie:", &trie.Root)
+
+	json.NewEncoder(w).Encode(trie)
 }
