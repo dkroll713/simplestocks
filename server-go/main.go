@@ -5,11 +5,18 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
+	"strconv"
+	"strings"
 
 	ds "go-server/lib"
 
+	"github.com/gorilla/mux"
 	"github.com/spf13/viper"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/pgdialect"
@@ -18,27 +25,84 @@ import (
 	// srv "server-go/fileserver"
 )
 
-const (
-	host     = "52.207.198.14"
-	port     = 5432
-	user     = "ubuntu"
-	password = "birdhouse"
-	dbname   = "stocks"
-)
+type spaHandler struct {
+	staticPath string
+	indexPath  string
+}
+
+func (h spaHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	// get the absolute path to prevent directory traversal
+	path, err := filepath.Abs(r.URL.Path)
+	if err != nil {
+		// if we failed to get the absolute path respond with a 400 bad request
+		// and stop
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// prepend the path with the path to the static directory
+	path = filepath.Join(h.staticPath, path)
+
+	// check whether a file exists at the given path
+	_, err = os.Stat(path)
+	if os.IsNotExist(err) {
+		// file does not exist, serve index.html
+		http.ServeFile(w, r, filepath.Join(h.staticPath, h.indexPath))
+		return
+	} else if err != nil {
+		// if we got an error (that wasn't that the file doesn't exist) stating the
+		// file, return a 500 internal server error and stop
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// otherwise, use http.FileServer to serve the static dir
+	http.FileServer(http.Dir(h.staticPath)).ServeHTTP(w, r)
+}
 
 func main() {
-	fs := http.FileServer(http.Dir("public"))
-	port := ":3001"
-	http.Handle("/", fs)                     // serves static files
-	http.HandleFunc("/getUser", userHandler) // if route is /getUser, register  this handleFunc
-	http.HandleFunc("/validTickers", trieHandler)
-	http.HandleFunc("/tickers", tickersHandler)
+	router := mux.NewRouter()
+	// fs := http.FileServer(http.Dir("public"))
+	// port := ":3001"
 
-	log.Print("Listening on " + port + "...")
-	err := http.ListenAndServe(port, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	// router.HandleFunc("/", fs)
+	s := http.StripPrefix("/", http.FileServer(http.Dir("public")))
+	router.HandleFunc("/getUser", userHandler)
+	router.HandleFunc("/validTickers", trieHandler)
+	router.HandleFunc("/tickers", tickersHandler)
+	router.HandleFunc("/ticker/{ticker}", TickerInfoHandler)
+	router.HandleFunc("/price/{ticker}", PriceHandler)
+	router.HandleFunc("/chart/{ticker}", ChartHandler)
+	router.HandleFunc("/quote/{ticker}", QuoteHandler)
+	// spa := spaHandler{staticPath: "public", indexPath: "index.html"}
+	// router.PathPrefix("/").Handler(spa)
+
+	http.Handle("/", router)
+	router.PathPrefix("/").Handler(s)
+	// srv := &http.Server{
+	// 	Handler:      router,
+	// 	Addr:         "127.0.0.1:3001",
+	// 	WriteTimeout: 15 * time.Second,
+	// 	ReadTimeout:  15 * time.Second,
+	// }
+
+	log.Fatal(http.ListenAndServe(":3001", nil))
+	// http.Handle("/", fs) // serves static files
+
+	// http.HandleFunc("/getUser", userHandler) // if route is /getUser, register  this handleFunc
+	// http.HandleFunc("/validTickers", trieHandler)
+	// http.HandleFunc("/tickers", tickersHandler)
+	// http.HandleFunc("/ticker/", TickerInfoHandler)
+
+	// log.Print("Listening on " + port + "...")
+	// err := http.ListenAndServe(port, nil)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+}
+
+func printRequestUrl(r *http.Request) {
+	log.Print(r.URL)
 }
 
 func viperEnvKey(key string) string {
@@ -143,6 +207,7 @@ type Updated_at string
 func userHandler(w http.ResponseWriter, r *http.Request) {
 	// select user from db
 	// if no entry in db, insert user into db
+	printRequestUrl(r)
 	if r.URL.Path != "/getUser" {
 		http.Error(w, "404 not found", http.StatusNotFound)
 		return
@@ -179,6 +244,7 @@ func userHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func trieHandler(w http.ResponseWriter, r *http.Request) {
+	printRequestUrl(r)
 	query := `select i.ticker from information i where i.isdelisted='N'`
 	db := dbConnect()
 	ctx := context.Background()
@@ -217,6 +283,7 @@ type Tickers struct {
 }
 
 func tickersHandler(w http.ResponseWriter, r *http.Request) {
+	printRequestUrl(r)
 	if r.URL.Path != "/tickers" {
 		http.Error(w, "404 not found", http.StatusNotFound)
 		return
@@ -275,4 +342,175 @@ func tickersHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(tickers)
+}
+
+type TickerInfo struct {
+	Ticker         string `json:"ticker"`
+	Name           string `json:"name"`
+	Sector         string `json:"sector"`
+	Industry       string `json:"industry"`
+	Scalemarketcap string `json:"scalemarketcap"`
+	Scalerevenue   string `json:"scalerevenue"`
+}
+
+func TickerInfoHandler(w http.ResponseWriter, r *http.Request) {
+	printRequestUrl(r)
+	if r.Method != "GET" {
+		http.Error(w, "method is not supported", http.StatusNotFound)
+		return
+	}
+
+	ticker := strings.Split(r.URL.Path, "/")[2]
+	fmt.Println("ticker request:", ticker)
+	db := dbConnect()
+	ctx := context.Background()
+	query := `
+		SELECT c.ticker, i.name, i.sector, i.industry, i.scalemarketcap, i.scalerevenue
+		FROM chosen c, information i
+		WHERE c.ticker = ? AND c.ticker = i.ticker
+		ORDER BY c.ticker asc
+	`
+	rows, err := db.QueryContext(ctx, query, ticker)
+	cols, _ := rows.Columns()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	m := make(map[string]interface{})
+	for rows.Next() {
+		columns := make([]interface{}, len(cols))
+		columnPointers := make([]interface{}, len(cols))
+		for i, _ := range columns {
+			columnPointers[i] = &columns[i]
+		}
+
+		// scan the result into the column pointers
+		if err := rows.Scan(columnPointers...); err != nil {
+			return
+		}
+
+		// create a map and retrieve the value for each column from the pointers slice
+		// storing it in the map with the name of the column as the key
+
+		for i, colName := range cols {
+			val := columnPointers[i].(*interface{})
+			m[colName] = *val
+		}
+	}
+	json.NewEncoder(w).Encode(m)
+}
+
+func PriceHandler(w http.ResponseWriter, r *http.Request) {
+	printRequestUrl(r)
+	ticker := strings.Split(r.URL.Path, "/")[2]
+	iex := viperEnvKey("IEX")
+	url := "https://cloud.iexapis.com/stable/stock/" + ticker + "/price?token=" + iex
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Fatal(err)
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(string(body))
+	price, err := strconv.ParseFloat(string(body), 64)
+	if err != nil {
+		log.Fatal(err)
+	}
+	json.NewEncoder(w).Encode(price)
+}
+
+func ChartHandler(w http.ResponseWriter, r *http.Request) {
+	printRequestUrl(r)
+	ticker := strings.Split(r.URL.Path, "/")[2]
+	iex := viperEnvKey("IEX")
+	url := "https://cloud.iexapis.com/stable/stock/" + ticker + "/chart/6m?token=" + iex
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Fatal(err)
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	formattedBody := CreateChart(body)
+	json.NewEncoder(w).Encode(formattedBody)
+}
+
+type Chart struct {
+	X string    `json:"x"`
+	Y []float64 `json:"y"`
+}
+
+type StockPrice struct {
+	Close     float64 `json:"close"`
+	High      float64 `json:"high"`
+	Low       float64 `json:"low"`
+	Open      float64 `json:"open"`
+	PriceDate string  `json:"priceDate"`
+}
+
+func CreateChart(chart []uint8) []Chart {
+	var raw []map[string]interface{}
+	err := json.Unmarshal([]byte(chart), &raw)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var stocks []Chart
+	for _, r := range raw {
+		sp := StockPrice{
+			Close:     r["close"].(float64),
+			High:      r["high"].(float64),
+			Low:       r["low"].(float64),
+			Open:      r["open"].(float64),
+			PriceDate: r["priceDate"].(string),
+		}
+		var chartObject Chart
+		chartObject.X = sp.PriceDate
+		chartObject.Y = append(chartObject.Y, sp.Open)
+		chartObject.Y = append(chartObject.Y, sp.High)
+		chartObject.Y = append(chartObject.Y, sp.Low)
+		chartObject.Y = append(chartObject.Y, sp.Close)
+		stocks = append(stocks, chartObject)
+	}
+
+	return stocks
+}
+
+func QuoteHandler(w http.ResponseWriter, r *http.Request) {
+	printRequestUrl(r)
+	ticker := strings.Split(r.URL.Path, "/")[2]
+	iex := viperEnvKey("IEX")
+	url := "https://cloud.iexapis.com/stable/stock/" + ticker + "/quote?token=" + iex
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Fatal(err)
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var data map[string]interface{}
+	err = json.Unmarshal([]byte(body), &data)
+	if err != nil {
+		panic(err)
+	}
+
+	json.NewEncoder(w).Encode(data)
+
+	// let ticker = req.url.split('/')[2];
+	// let url = `https://cloud.iexapis.com/stable/stock/${ticker}/quote?token=${cf.iex}`
+	// axios.get(url)
+	//   .then((result) => {
+	//     // console.log(result.data);
+	//     res.send(result.data);
+	//   })
+	//   .catch(err => {
+	//     res.status(500).send(err);
+	//   })
 }
