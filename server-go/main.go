@@ -208,7 +208,7 @@ func userHandler(w http.ResponseWriter, r *http.Request) {
 	// select user from db
 	// if no entry in db, insert user into db
 	printRequestUrl(r)
-	if r.URL.Path != "/getUser" {
+	if r.URL.Path != "/api/getUser" {
 		http.Error(w, "404 not found", http.StatusNotFound)
 		return
 	}
@@ -284,7 +284,7 @@ type Tickers struct {
 
 func tickersHandler(w http.ResponseWriter, r *http.Request) {
 	printRequestUrl(r)
-	if r.URL.Path != "/tickers" {
+	if r.URL.Path != "/api/tickers" {
 		http.Error(w, "404 not found", http.StatusNotFound)
 		return
 	}
@@ -360,7 +360,7 @@ func TickerInfoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ticker := strings.Split(r.URL.Path, "/")[2]
+	ticker := strings.Split(r.URL.Path, "/")[3]
 	fmt.Println("ticker request:", ticker)
 	db := dbConnect()
 	ctx := context.Background()
@@ -403,7 +403,7 @@ func TickerInfoHandler(w http.ResponseWriter, r *http.Request) {
 
 func PriceHandler(w http.ResponseWriter, r *http.Request) {
 	printRequestUrl(r)
-	ticker := strings.Split(r.URL.Path, "/")[2]
+	ticker := strings.Split(r.URL.Path, "/")[3]
 	iex := viperEnvKey("IEX")
 	url := "https://cloud.iexapis.com/stable/stock/" + ticker + "/price?token=" + iex
 	resp, err := http.Get(url)
@@ -424,7 +424,7 @@ func PriceHandler(w http.ResponseWriter, r *http.Request) {
 
 func ChartHandler(w http.ResponseWriter, r *http.Request) {
 	printRequestUrl(r)
-	ticker := strings.Split(r.URL.Path, "/")[2]
+	ticker := strings.Split(r.URL.Path, "/")[3]
 	iex := viperEnvKey("IEX")
 	url := "https://cloud.iexapis.com/stable/stock/" + ticker + "/chart/6m?token=" + iex
 	resp, err := http.Get(url)
@@ -483,7 +483,7 @@ func CreateChart(chart []uint8) []Chart {
 
 func QuoteHandler(w http.ResponseWriter, r *http.Request) {
 	printRequestUrl(r)
-	ticker := strings.Split(r.URL.Path, "/")[2]
+	ticker := strings.Split(r.URL.Path, "/")[3]
 	iex := viperEnvKey("IEX")
 	url := "https://cloud.iexapis.com/stable/stock/" + ticker + "/quote?token=" + iex
 	resp, err := http.Get(url)

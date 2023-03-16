@@ -23,12 +23,13 @@ const HomePage = () => {
   const setUser = store((state) => state.setUser);
   const loaded = store((state) => state.loaded);
   const setLoaded = store((state) => state.setLoaded);
+  const [ready, setReady] = useState(false)
   const { user, isAuthenticated, isLoading } = useAuth0();
 
   useEffect(() => {
     console.log(user);
     if (user) {
-      axios.post('/getUser', { user })
+      axios.post('/api/getUser', { user })
         .then((res) => {
           console.log(res.data)
           setUser(res.data.user_id)
@@ -38,10 +39,13 @@ const HomePage = () => {
         })
         .then(() => {
           if (verifiedUser) {
+            console.log('stocks')
             console.log('firing ticker load for', verifiedUser);
-            axios.post('/tickers', { user: verifiedUser })
+            axios.post('/api/tickers', { user: verifiedUser })
               .then((response) => {
-                setStocks(response)
+                console.log(response)
+                setStocks(response.data)
+                setReady(true)
               })
               .catch(err => {
                 console.log('failed to fetch tickers:', err)
@@ -57,7 +61,7 @@ const HomePage = () => {
   useEffect(() => {
     if (update) {
       console.log('firing updated ticker load');
-      axios.post('/tickers', { user: verifiedUser })
+      axios.post('/api/tickers', { user: verifiedUser })
         .then((res) => {
           setStocks(res);
           unsetUpdate();
@@ -72,7 +76,7 @@ const HomePage = () => {
     console.log('updating displayed cards')
   }, [stocks])
 
-  if (verifiedUser) {
+  if (verifiedUser && ready) {
     return (
       <div>
         <HeaderBar />

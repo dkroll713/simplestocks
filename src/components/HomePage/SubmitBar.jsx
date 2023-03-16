@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 import './_submit.scss';
 
@@ -32,7 +32,7 @@ const Submit = () => {
     setCurrent(e.target.value);
     setDropDown(dataStructures.getAllWordsStartingWith(e.target.value.toUpperCase(), branch));
     if (e.target.value.length > 0) {
-      console.log(e.target.value,'true')
+      console.log(e.target.value, 'true')
       setOpen(true);
     } else if (e.target.value.length === 0) {
       setOpen(false);
@@ -50,39 +50,39 @@ const Submit = () => {
   const handleClick = (e) => {
     // console.log('click');
     console.log(verifiedUser);
-    axios.post(`/tickers/${current.toUpperCase()}`,{user: verifiedUser})
-    .then((res) => {
-      if (res.status === 500) {
-        console.log(res.data);
-      } else {
-        console.log(res)
-        let input = document.getElementById('input')
-        setCurrent('')
-        setDropDown([])
-        input.value = '';
-      }
-    })
-    .then(() => {
-      getStocks(verifiedUser);
-    })
-    .catch(err => {
-      console.log(err);
-    })
+    axios.post(`/api/tickers/${current.toUpperCase()}`, { user: verifiedUser })
+      .then((res) => {
+        if (res.status === 500) {
+          console.log(res.data);
+        } else {
+          console.log(res)
+          let input = document.getElementById('input')
+          setCurrent('')
+          setDropDown([])
+          input.value = '';
+        }
+      })
+      .then(() => {
+        getStocks(verifiedUser);
+      })
+      .catch(err => {
+        console.log(err);
+      })
   }
 
   useEffect(() => {
     console.log(loaded);
     if (!loaded) {
-      axios.get('/validTickers')
-      .then(res => {
-        let trie = res.data;
-        setBranch(trie.root)
-        console.log(branch);
-        setValidTickers(dataStructures.getAllWords(trie.root));
-        if (!loaded) {
-          setLoaded()
-        }
-      })
+      axios.get('/api/validTickers')
+        .then(res => {
+          let trie = res.data;
+          setBranch(trie.root)
+          console.log(branch);
+          setValidTickers(dataStructures.getAllWords(trie.root));
+          if (!loaded) {
+            setLoaded()
+          }
+        })
     }
   }, [loaded])
 

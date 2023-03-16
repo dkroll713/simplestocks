@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 const axios = require('axios');
 
@@ -27,13 +27,13 @@ const StockView = (props) => {
   // console.log('stats in sv:', stats)
 
   useEffect(() => {
-    axios.get(`/news/${currentDetail}`)
-    .then((res) => {
-      console.log(res.data);
-      setNews(res.data);
-      setLoaded(true);
-    })
-  },[])
+    axios.get(`/api/news/${currentDetail}`)
+      .then((res) => {
+        console.log(res.data);
+        setNews(res.data);
+        setLoaded(true);
+      })
+  }, [])
 
   return (
     <div className="viewContainer">
@@ -42,43 +42,43 @@ const StockView = (props) => {
           {currentName}
         </h3>
       </div>
-        <div className="contentContainer">
-          <div className="topBox">
-            <div className="leftBox">
-              <Info />
-            </div>
-            <div className="rightBox">
-              {/* <div className="linkBox">
+      <div className="contentContainer">
+        <div className="topBox">
+          <div className="leftBox">
+            <Info />
+          </div>
+          <div className="rightBox">
+            {/* <div className="linkBox">
                 <a className="link" href={`https://www.google.com/search?q=${currentDetail}+stock&hl=en&biw=1244&bih=1333&tbm=nws&sxsrf=ALiCzsaTyt6KLXU0-2fKUfIsXUSi50nYMQ%3A1666726577101&ei=sTpYY6TeBam2qtsPtIWICA&ved=0ahUKEwjk-sKskPz6AhUpm2oFHbQCAgEQ4dUDCA0&uact=5&oq=kalu+stock&gs_lp=Egxnd3Mtd2l6LW5ld3O4AQP4AQEyBRAAGIAEMgUQABiABDIFEAAYgAQyBRAAGIAEMgYQABgWGB4yBhAAGBYYHjIGEAAYFhgeMgYQABgWGB4yBhAAGBYYHjIIEAAYFhgeGA_CAgcQABixAxhDwgIHEAAYgAQYA8ICCRAAGIAEGAoYA8ICDRAAGIAEGLEDGIMBGArCAggQABixAxiDAcICBBAAGEPCAgUQABiRAsICBxAAGIAEGApIgQhQgwNYigdwAHgAyAEAkAEAmAFNoAHjA6oBATeIBgE&sclient=gws-wiz-news`}>Google news</a>
                 <a className="link" href={`https://seekingalpha.com/symbol/${currentDetail}/news`}>SeekingAlpha</a>
               </div> */}
-              <div className="newsBox">
-                {
-                  news ?
+            <div className="newsBox">
+              {
+                news ?
                   news.map(newsItem => {
                     newsItem.summary.length > 100
-                    ? (
-                      newsItem.summary = newsItem.summary.split('.').splice(0,2).join('.')
-                    )
-                    : null
+                      ? (
+                        newsItem.summary = newsItem.summary.split('.').splice(0, 2).join('.')
+                      )
+                      : null
                     return (
                       <>
-                      <div className="listItem">
-                        <h3 className="newsHeader"><a href={newsItem.url}>{newsItem.headline}</a></h3>
-                        <h5 className="newsSource">{newsItem.source}</h5>
-                        <h6>Paywall:
-                          { newsItem.hasPaywall ? <span> yes</span> : <span> no</span>}
-                        </h6>
-                        <p className="newsSummary">{newsItem.summary}</p>
-                      </div>
+                        <div className="listItem">
+                          <h3 className="newsHeader"><a href={newsItem.url}>{newsItem.headline}</a></h3>
+                          <h5 className="newsSource">{newsItem.source}</h5>
+                          <h6>Paywall:
+                            {newsItem.hasPaywall ? <span> yes</span> : <span> no</span>}
+                          </h6>
+                          <p className="newsSummary">{newsItem.summary}</p>
+                        </div>
                       </>
                     )
                   })
                   : null
-                }
-              </div>
+              }
             </div>
           </div>
+        </div>
         {/* <div className="row">
           <p>
             52 week low: ${stats.week52low}

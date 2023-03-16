@@ -17,52 +17,52 @@ app.use(bodyParser())
 
 app.options('*', cors());
 
-app.use(express.static(path.join(__dirname,"../public",)));
+app.use(express.static(path.join(__dirname, "../public",)));
 
-app.post('/getUser', controllers.getUser);
+app.post('/api/getUser', controllers.getUser);
 
-app.get('/validTickers', controllers.getValidTickers);
+app.get('/api/validTickers', controllers.getValidTickers);
 
-app.get('/news*', controllers.getNews);
+app.get('/api/news*', controllers.getNews);
 
-app.post('/tickers', controllers.getTickers)
+app.post('/api/tickers', controllers.getTickers)
 
-app.post('/tickers/*', controllers.addTicker);
+app.post('/api/tickers/*', controllers.addTicker);
 
-app.get('/ticker/*', controllers.getBasicInfo);
+app.get('/api/ticker/*', controllers.getBasicInfo);
 
-app.get('/price/*', controllers.price);
+app.get('/api/price/*', controllers.price);
 
-app.get('/chart/*', controllers.chart);
+app.get('/api/chart/*', controllers.chart);
 
-app.get('/info/*', controllers.tickerInfo)
+app.get('/api/info/*', controllers.tickerInfo)
 
-app.get('/quote/*', controllers.quote)
+app.get('/api/quote/*', controllers.quote)
 
-app.get('/iexStats/*', controllers.iexStats)
+app.get('/api/iexStats/*', controllers.iexStats)
 
-app.get(`/financials/*`, controllers.financials)
+app.get(`/api/financials/*`, controllers.financials)
 
-app.get('/finstats/*', controllers.finstats)
+app.get('/api/finstats/*', controllers.finstats)
 
-app.get('/bsDesc', controllers.bs);
+app.get('/api/bsDesc', controllers.bs);
 
-app.get('/balanceSheetSmall/*', controllers.bsSmall)
+app.get('/api/balanceSheetSmall/*', controllers.bsSmall)
 
-app.get('/balanceSheetBig/*', controllers.bsBig);
+app.get('/api/balanceSheetBig/*', controllers.bsBig);
 
-app.get('/isDesc', controllers.is);
+app.get('/api/isDesc', controllers.is);
 
-app.get('/cfDesc', controllers.cf);
+app.get('/api/cfDesc', controllers.cf);
 
-app.get('/mtDesc', controllers.mt)
+app.get('/api/mtDesc', controllers.mt)
 
 // sec-related endpoints
-app.get('/cik/*', controllers.CIK)
+app.get('/api/cik/*', controllers.CIK)
 
-app.get('/float/*', controllers.float);
+app.get('/api/float/*', controllers.float);
 
-app.get('/insiders/*', controllers.insiders)
+app.get('/api/insiders/*', controllers.insiders)
 
 app.listen(port, () => {
   console.log(`saved choice server listening on port ${port}`)

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 const axios = require('axios');
 
 import {
@@ -32,22 +32,22 @@ const CardDetails = (props) => {
   const [currentView, setCurrentView] = useState(1)
 
   useEffect(() => {
-    let SVInfo = axios.get(`/iexStats/${currentDetail}`)
-    let financials = axios.get(`/financials/${currentDetail}`)
-    let bsDesc = axios.get('/bsDesc')
-    let isDesc = axios.get('/isDesc')
-    let cfDesc = axios.get('/cfDesc')
-    let mtDesc = axios.get('/mtDesc');
+    let SVInfo = axios.get(`/api/iexStats/${currentDetail}`)
+    let financials = axios.get(`/api/financials/${currentDetail}`)
+    let bsDesc = axios.get('/api/bsDesc')
+    let isDesc = axios.get('/api/isDesc')
+    let cfDesc = axios.get('/api/cfDesc')
+    let mtDesc = axios.get('/api/mtDesc');
     Promise.all([SVInfo, financials, bsDesc, isDesc, cfDesc, mtDesc])
-    .then(values => {
-      setStats(values[0].data)
-      setCurrentName(values[0].data.companyName)
-      setFinancials(values[1].data)
-      setBsDesc(values[2].data);
-      setIsDesc(values[3].data)
-      setCfDesc(values[4].data)
-      setMtDesc(values[5].data);
-    })
+      .then(values => {
+        setStats(values[0].data)
+        setCurrentName(values[0].data.companyName)
+        setFinancials(values[1].data)
+        setBsDesc(values[2].data);
+        setIsDesc(values[3].data)
+        setCfDesc(values[4].data)
+        setMtDesc(values[5].data);
+      })
   }, [currentDetail])
 
   const toggleBasic = () => {
@@ -92,14 +92,14 @@ const CardDetails = (props) => {
         <div className="detailedInfoContainer">
           {
             currentView === 1
-            ? <StockView stats={stats} />
-            : currentView === 2
-            ? <BSView financials={financials} definitions={bsDesc}/>
-            : currentView === 3
-            ? <div>Income Statement View</div>
-            : currentView === 4
-            ? <div>Technical Indicator View</div>
-            : <div>Invalid View</div>
+              ? <StockView stats={stats} />
+              : currentView === 2
+                ? <BSView financials={financials} definitions={bsDesc} />
+                : currentView === 3
+                  ? <div>Income Statement View</div>
+                  : currentView === 4
+                    ? <div>Technical Indicator View</div>
+                    : <div>Invalid View</div>
           }
         </div>
       </div>
