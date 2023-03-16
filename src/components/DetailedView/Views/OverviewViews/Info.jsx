@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 const axios = require('axios');
 
@@ -21,27 +21,27 @@ const Info = (props) => {
   const setInsiders = infoStore(state => state.setInsiders);
 
   useEffect(() => {
-    axios.get(`/insiders/${currentDetail}`)
-    .then(res => {
-      let data = res.data;
-      setInsiders(data);
-    })
+    axios.get(`/api/insiders/${currentDetail}`)
+      .then(res => {
+        let data = res.data;
+        setInsiders(data);
+      })
 
-    axios.get(`/float/${currentDetail}`)
-    .then(res => {
-      console.log(res.data);
-      setDescription(res.data.description)
-      let floatVal = res.data.val;
-      floatVal = String(floatVal).split('');
-      let count = 1;
-      for (let x = floatVal.length-1; x >= 0; x--) {
-        if (count % 3 === 0 && x !== 0) floatVal.splice(x,0,',')
-        count++;
-      }
-      floatVal = floatVal.join('')
-      setFloat(floatVal);
-    })
-  },[])
+    axios.get(`/api/float/${currentDetail}`)
+      .then(res => {
+        console.log(res.data);
+        setDescription(res.data.description)
+        let floatVal = res.data.val;
+        floatVal = String(floatVal).split('');
+        let count = 1;
+        for (let x = floatVal.length - 1; x >= 0; x--) {
+          if (count % 3 === 0 && x !== 0) floatVal.splice(x, 0, ',')
+          count++;
+        }
+        floatVal = floatVal.join('')
+        setFloat(floatVal);
+      })
+  }, [])
 
   const onHover = (e) => {
     console.log('hovering');

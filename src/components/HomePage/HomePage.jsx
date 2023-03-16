@@ -16,7 +16,7 @@ import './_home.scss'
 const HomePage = () => {
   // const stocks = store((state => state.stocks))
   // const setStocks = store((state) => state.setStocks)
-  const [stocks, setStocks] = useState({})
+  const [stocks, setStocks] = useState([])
   const update = store((state) => state.update);
   const unsetUpdate = store((state) => state.unsetUpdate)
   const verifiedUser = store((state) => state.user);

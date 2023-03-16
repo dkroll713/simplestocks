@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 import StatementComponent from '../StatementComponent.jsx';
 import HeaderColumn from '../HeaderColumn.jsx'
@@ -17,7 +17,7 @@ const year = (date) => {
 
 const statementFormat = (number) => {
   if (number > 0) {
-    number = number/1000
+    number = number / 1000
     return new Intl.NumberFormat('en-EN', { style: 'currency', currency: 'USD' }).format(number)
   }
 }
@@ -37,12 +37,12 @@ const BSCompactView = (props) => {
 
   useEffect(() => {
     if (!loaded) {
-      axios.get(`/balanceSheetSmall/${currentDetail}`)
-      .then(res => {
-        console.log(res.data)
-        setFinancials(res.data);
-        setLoaded(true);
-      })
+      axios.get(`/api/balanceSheetSmall/${currentDetail}`)
+        .then(res => {
+          console.log(res.data)
+          setFinancials(res.data);
+          setLoaded(true);
+        })
     }
   }, [loaded])
 
@@ -54,364 +54,364 @@ const BSCompactView = (props) => {
 
   return (
     <>
-    {
-      loaded
-      ? (
-        <div className="statementContainer">
-          <HeaderColumn
-            financials={financials}
-            definitions={definitions}
-            type={'compact'}
-          />
-          <div className="colBreak">
+      {
+        loaded
+          ? (
+            <div className="statementContainer">
+              <HeaderColumn
+                financials={financials}
+                definitions={definitions}
+                type={'compact'}
+              />
+              <div className="colBreak">
 
-          </div>
-          <div className="assetsContainer">
-            <div className="column">
-              <div className="yearBox">
-                <span>{year(year1.reportperiod)}</span>
               </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year1.assets)}
-                  <PercentWidget
-                    firstYear={year1}
-                    secondYear={year2}
-                    item={'assets'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year1.assetsc)}
-                  <PercentWidget
-                    firstYear={year1}
-                    secondYear={year2}
-                    item={'assetsc'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year1.assetsnc)}
-                  <PercentWidget
-                    firstYear={year1}
-                    secondYear={year2}
-                    item={'assets'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year1.liabilities)}
-                  <PercentWidget
-                    firstYear={year1}
-                    secondYear={year2}
-                    item={'liabilities'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year1.liabilitiesc)}
-                  <PercentWidget
-                    firstYear={year1}
-                    secondYear={year2}
-                    item={'liabilitiesc'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year1.liabilitiesnc)}
-                  <PercentWidget
-                    firstYear={year1}
-                    secondYear={year2}
-                    item={'liabilitiesnc'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year1.equity)}
-                  <PercentWidget
-                    firstYear={year1}
-                    secondYear={year2}
-                    item={'equity'}
-                  />
-                </span>
+              <div className="assetsContainer">
+                <div className="column">
+                  <div className="yearBox">
+                    <span>{year(year1.reportperiod)}</span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year1.assets)}
+                      <PercentWidget
+                        firstYear={year1}
+                        secondYear={year2}
+                        item={'assets'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year1.assetsc)}
+                      <PercentWidget
+                        firstYear={year1}
+                        secondYear={year2}
+                        item={'assetsc'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year1.assetsnc)}
+                      <PercentWidget
+                        firstYear={year1}
+                        secondYear={year2}
+                        item={'assets'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year1.liabilities)}
+                      <PercentWidget
+                        firstYear={year1}
+                        secondYear={year2}
+                        item={'liabilities'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year1.liabilitiesc)}
+                      <PercentWidget
+                        firstYear={year1}
+                        secondYear={year2}
+                        item={'liabilitiesc'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year1.liabilitiesnc)}
+                      <PercentWidget
+                        firstYear={year1}
+                        secondYear={year2}
+                        item={'liabilitiesnc'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year1.equity)}
+                      <PercentWidget
+                        firstYear={year1}
+                        secondYear={year2}
+                        item={'equity'}
+                      />
+                    </span>
+                  </div>
+                </div>
+                <div className="column">
+                  <div className="yearBox">
+                    <span>{year(year2.reportperiod)}</span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year2.assets)}
+                      <PercentWidget
+                        firstYear={year2}
+                        secondYear={year3}
+                        item={'assets'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year2.assetsc)}
+                      <PercentWidget
+                        firstYear={year2}
+                        secondYear={year3}
+                        item={'assetsc'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year2.assetsnc)}
+                      <PercentWidget
+                        firstYear={year2}
+                        secondYear={year3}
+                        item={'assetsnc'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year2.liabilities)}
+                      <PercentWidget
+                        firstYear={year2}
+                        secondYear={year3}
+                        item={'liabilities'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year2.liabilitiesc)}
+                      <PercentWidget
+                        firstYear={year2}
+                        secondYear={year3}
+                        item={'liabilitiesc'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year2.liabilitiesnc)}
+                      <PercentWidget
+                        firstYear={year2}
+                        secondYear={year3}
+                        item={'liabilitiesnc'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year2.equity)}
+                      <PercentWidget
+                        firstYear={year2}
+                        secondYear={year3}
+                        item={'equity'}
+                      />
+                    </span>
+                  </div>
+                </div>
+                <div className="column">
+                  <div className="yearBox">
+                    <span>{year(year3.reportperiod)}</span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year3.assets)}
+                      <PercentWidget
+                        firstYear={year3}
+                        secondYear={year4}
+                        item={'assets'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year3.assetsc)}
+                      <PercentWidget
+                        firstYear={year3}
+                        secondYear={year4}
+                        item={'assetsc'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year3.assetsnc)}
+                      <PercentWidget
+                        firstYear={year3}
+                        secondYear={year4}
+                        item={'assetsnc'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year3.liabilities)}
+                      <PercentWidget
+                        firstYear={year3}
+                        secondYear={year4}
+                        item={'liabilities'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year3.liabilitiesc)}
+                      <PercentWidget
+                        firstYear={year3}
+                        secondYear={year4}
+                        item={'liabilitiesc'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year3.liabilitiesnc)}
+                      <PercentWidget
+                        firstYear={year3}
+                        secondYear={year4}
+                        item={'liabilitiesnc'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year3.equity)}
+                      <PercentWidget
+                        firstYear={year3}
+                        secondYear={year4}
+                        item={'equity'}
+                      />
+                    </span>
+                  </div>
+                </div>
+                <div className="column">
+                  <div className="yearBox">
+                    <span>{year(year4.reportperiod)}</span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year4.assets)}
+                      <PercentWidget
+                        firstYear={year4}
+                        secondYear={year5}
+                        item={'assets'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year4.assetsc)}
+                      <PercentWidget
+                        firstYear={year4}
+                        secondYear={year5}
+                        item={'assetsc'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year4.assetsnc)}
+                      <PercentWidget
+                        firstYear={year4}
+                        secondYear={year5}
+                        item={'assetsnc'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year4.liabilities)}
+                      <PercentWidget
+                        firstYear={year4}
+                        secondYear={year5}
+                        item={'liabilities'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year4.liabilitiesc)}
+                      <PercentWidget
+                        firstYear={year4}
+                        secondYear={year5}
+                        item={'liabilitiesnc'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year4.liabilitiesnc)}
+                      <PercentWidget
+                        firstYear={year4}
+                        secondYear={year5}
+                        item={'liabilitiesnc'}
+                      />
+                    </span>
+                  </div>
+                  <div className="box">
+                    <span>
+                      {statementFormat(year4.equity)}
+                      <PercentWidget
+                        firstYear={year4}
+                        secondYear={year5}
+                        item={'equity'}
+                      />
+                    </span>
+                  </div>
+                </div>
+                <div className="finalColumn">
+                  <div className="finalYearBox">
+                    <span>{year(year5.reportperiod)}</span>
+                  </div>
+                  <br />
+                  <div className="boxFinal">
+                    <span className="final">
+                      {statementFormat(year5.assets)}
+                    </span>
+                  </div>
+                  <div className="boxFinal">
+                    <span className="final">
+                      {statementFormat(year5.assetsc)}
+                    </span>
+                  </div>
+                  <div className="boxFinal">
+                    <span className="final">
+                      {statementFormat(year5.assetsnc)}
+                    </span>
+                  </div>
+                  <div className="boxFinal">
+                    <span className="final">
+                      {statementFormat(year5.liabilities)}
+                    </span>
+                  </div>
+                  <div className="boxFinal">
+                    <span className="final">
+                      {statementFormat(year5.liabilitiesc)}
+                    </span>
+                  </div>
+                  <div className="boxFinal">
+                    <span className="final">
+                      {statementFormat(year5.liabilitiesnc)}
+                    </span>
+                  </div>
+                  <div className="boxFinal">
+                    <span className="final">
+                      {statementFormat(year5.equity)}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="column">
-              <div className="yearBox">
-                <span>{year(year2.reportperiod)}</span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year2.assets)}
-                  <PercentWidget
-                    firstYear={year2}
-                    secondYear={year3}
-                    item={'assets'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year2.assetsc)}
-                  <PercentWidget
-                    firstYear={year2}
-                    secondYear={year3}
-                    item={'assetsc'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year2.assetsnc)}
-                  <PercentWidget
-                    firstYear={year2}
-                    secondYear={year3}
-                    item={'assetsnc'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year2.liabilities)}
-                  <PercentWidget
-                    firstYear={year2}
-                    secondYear={year3}
-                    item={'liabilities'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year2.liabilitiesc)}
-                  <PercentWidget
-                    firstYear={year2}
-                    secondYear={year3}
-                    item={'liabilitiesc'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year2.liabilitiesnc)}
-                  <PercentWidget
-                    firstYear={year2}
-                    secondYear={year3}
-                    item={'liabilitiesnc'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year2.equity)}
-                  <PercentWidget
-                    firstYear={year2}
-                    secondYear={year3}
-                    item={'equity'}
-                  />
-                </span>
-              </div>
-            </div>
-            <div className="column">
-              <div className="yearBox">
-                <span>{year(year3.reportperiod)}</span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year3.assets)}
-                  <PercentWidget
-                    firstYear={year3}
-                    secondYear={year4}
-                    item={'assets'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year3.assetsc)}
-                  <PercentWidget
-                    firstYear={year3}
-                    secondYear={year4}
-                    item={'assetsc'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year3.assetsnc)}
-                  <PercentWidget
-                    firstYear={year3}
-                    secondYear={year4}
-                    item={'assetsnc'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year3.liabilities)}
-                  <PercentWidget
-                    firstYear={year3}
-                    secondYear={year4}
-                    item={'liabilities'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year3.liabilitiesc)}
-                  <PercentWidget
-                    firstYear={year3}
-                    secondYear={year4}
-                    item={'liabilitiesc'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year3.liabilitiesnc)}
-                  <PercentWidget
-                    firstYear={year3}
-                    secondYear={year4}
-                    item={'liabilitiesnc'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year3.equity)}
-                  <PercentWidget
-                    firstYear={year3}
-                    secondYear={year4}
-                    item={'equity'}
-                  />
-                </span>
-              </div>
-            </div>
-            <div className="column">
-              <div className="yearBox">
-                <span>{year(year4.reportperiod)}</span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year4.assets)}
-                  <PercentWidget
-                    firstYear={year4}
-                    secondYear={year5}
-                    item={'assets'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year4.assetsc)}
-                  <PercentWidget
-                    firstYear={year4}
-                    secondYear={year5}
-                    item={'assetsc'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year4.assetsnc)}
-                  <PercentWidget
-                    firstYear={year4}
-                    secondYear={year5}
-                    item={'assetsnc'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year4.liabilities)}
-                  <PercentWidget
-                    firstYear={year4}
-                    secondYear={year5}
-                    item={'liabilities'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year4.liabilitiesc)}
-                  <PercentWidget
-                    firstYear={year4}
-                    secondYear={year5}
-                    item={'liabilitiesnc'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year4.liabilitiesnc)}
-                  <PercentWidget
-                    firstYear={year4}
-                    secondYear={year5}
-                    item={'liabilitiesnc'}
-                  />
-                </span>
-              </div>
-              <div className="box">
-                <span>
-                  {statementFormat(year4.equity)}
-                  <PercentWidget
-                    firstYear={year4}
-                    secondYear={year5}
-                    item={'equity'}
-                  />
-                </span>
-              </div>
-            </div>
-            <div className="finalColumn">
-              <div className="finalYearBox">
-                <span>{year(year5.reportperiod)}</span>
-              </div>
-              <br />
-              <div className="boxFinal">
-                <span className="final">
-                  {statementFormat(year5.assets)}
-                </span>
-              </div>
-              <div className="boxFinal">
-                <span className="final">
-                  {statementFormat(year5.assetsc)}
-                </span>
-              </div>
-              <div className="boxFinal">
-                <span className="final">
-                  {statementFormat(year5.assetsnc)}
-                </span>
-              </div>
-              <div className="boxFinal">
-                <span className="final">
-                  {statementFormat(year5.liabilities)}
-                </span>
-              </div>
-              <div className="boxFinal">
-                <span className="final">
-                  {statementFormat(year5.liabilitiesc)}
-                </span>
-              </div>
-              <div className="boxFinal">
-                <span className="final">
-                  {statementFormat(year5.liabilitiesnc)}
-                </span>
-              </div>
-              <div className="boxFinal">
-                <span className="final">
-                  {statementFormat(year5.equity)}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : null
-    }
+          ) : null
+      }
     </>
   )
 }

@@ -1,6 +1,6 @@
 const cf = require('../../config.js');
 
-const {Pool} = require('pg');
+const { Pool } = require('pg');
 const pool = new Pool({
   user: cf.user,
   password: cf.password,
@@ -23,16 +23,16 @@ module.exports.getBalanceSheetDescrpitons = (req, res) => {
     or i.description like '%' || '[Equity]' || '%'
   `
   pool.query(query)
-  .then((result) => {
-    res.send(result.rows);
-  })
-  .catch(err => {
-    res.status(500).send(err);
-  })
+    .then((result) => {
+      res.send(result.rows);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    })
 }
 
 module.exports.balanceSheetSmall = (req, res) => {
-  let ticker = req.url.split('/')[2].toUpperCase();
+  let ticker = req.url.split('/')[3].toUpperCase();
   let query = `
   select reportperiod, assets, assetsc, assetsnc, liabilities, liabilitiesc, liabilitiesnc, equity
   from financials
@@ -41,16 +41,16 @@ module.exports.balanceSheetSmall = (req, res) => {
   `
   let values = [ticker];
   pool.query(query, values)
-  .then(response => {
-    res.send(response.rows);
-  })
-  .catch(err => {
-    res.send(err);
-  })
+    .then(response => {
+      res.send(response.rows);
+    })
+    .catch(err => {
+      res.send(err);
+    })
 }
 
 module.exports.balanceSheetBig = (req, res) => {
-  let ticker = req.url.split('/')[2].toUpperCase();
+  let ticker = req.url.split('/')[3].toUpperCase();
   let query = `
   select reportperiod, assets, assetsc, cashneq, receivables, inventory, investmentsc,
   (assetsc - cashneq - receivables - inventory - investmentsc) as oca,
@@ -69,12 +69,12 @@ module.exports.balanceSheetBig = (req, res) => {
   `
   let values = [ticker];
   pool.query(query, values)
-  .then(response => {
-    res.send(response.rows);
-  })
-  .catch(err => {
-    res.send(err);
-  })
+    .then(response => {
+      res.send(response.rows);
+    })
+    .catch(err => {
+      res.send(err);
+    })
 }
 
 // ~25 total fields
@@ -85,12 +85,12 @@ module.exports.getIncomeStatementDescriptions = (req, res) => {
     where i.description like '%' || '[Income Statement]' || '%';
   `
   pool.query(query)
-  .then((result) => {
-    res.send(result.rows);
-  })
-  .catch(err => {
-    res.status(500).send(err);
-  })
+    .then((result) => {
+      res.send(result.rows);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    })
 }
 
 // 13 total fields
@@ -101,12 +101,12 @@ module.exports.getCashFlowDescriptions = (req, res) => {
     where i.description like '%' || '[Cash Flow Statement]' || '%';
   `
   pool.query(query)
-  .then((result) => {
-    res.send(result.rows);
-  })
-  .catch(err => {
-    res.status(500).send(err);
-  })
+    .then((result) => {
+      res.send(result.rows);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    })
 }
 
 // ~36 total fields
@@ -117,12 +117,12 @@ module.exports.getMetricDescriptions = (req, res) => {
     where i.description like '%' || '[Metrics]' || '%';
   `
   pool.query(query)
-  .then((result) => {
-    res.send(result.rows);
-  })
-  .catch(err => {
-    res.status(500).send(err);
-  })
+    .then((result) => {
+      res.send(result.rows);
+    })
+    .catch(err => {
+      res.status(500).send(err);
+    })
 }
 
 // select *
