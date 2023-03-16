@@ -502,15 +502,4 @@ func QuoteHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(data)
-
-	// let ticker = req.url.split('/')[2];
-	// let url = `https://cloud.iexapis.com/stable/stock/${ticker}/quote?token=${cf.iex}`
-	// axios.get(url)
-	//   .then((result) => {
-	//     // console.log(result.data);
-	//     res.send(result.data);
-	//   })
-	//   .catch(err => {
-	//     res.status(500).send(err);
-	//   })
 }
